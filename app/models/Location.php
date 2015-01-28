@@ -6,6 +6,8 @@
  * Time: 5:26 PM
  */
 
+namespace CCCOM;
+
 class Location extends Eloquent {
 
     /**
@@ -14,6 +16,8 @@ class Location extends Eloquent {
      * @var string
      */
     protected $table = 'locations';
+
+    protected $primaryKey = 'location_id';
 
     public function event() {
         return $this->belongsTo('Event');

@@ -9,7 +9,7 @@ class SiteController extends BaseController {
 
 
 	public function showIndex() {
-		return View::make('index');
+		return View::make('index.index');
 	}
 
 	public function showLogin() {

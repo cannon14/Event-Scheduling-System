@@ -16,12 +16,13 @@ public function up() {
 
     Schema::create('users', function($table) {
         $table->increments('user_id');
-        $table->string('email')->unique();
-        $table->string('password', 64);
-        $table->string('fname', 25);
-        $table->string('lname', 25);
-        $table->string('department', 25);
         $table->string('title', 25);
+        $table->string('password', 64);
+        $table->string('firstname', 25);
+        $table->string('lastname', 25);
+        $table->string('department', 25);
+        $table->string('email')->unique();
+        $table->string('telephone', 25);
         $table->timestamps();
     });
 }

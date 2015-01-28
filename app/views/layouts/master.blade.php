@@ -1,22 +1,97 @@
 <!DOCTYPE html>
 <html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>Creditcards.com Conference Room Scheduling System</title>
+<head>
+    <title>Creditcards.com User Reviews Manager</title>
+    <meta charset="UTF-8">
+    <meta name="application-name" content="Widget Factory">
+    <meta name="description" content="Application for making and deploying custom widgets">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    <meta name="author" content="CreditCards.com">
+    <meta name="copyright" content="Copyright <?= date("Y"); ?> CreditCards.com">
 
-        {{ HTML::script('packages/jquery/jquery.min.js'); }}
-        {{ HTML::script('packages/bootstrap/dist/js/bootstrap.min.js'); }}
-        {{ HTML::script('packages/moment/moment.js'); }}
-        {{ HTML::script('packages/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'); }}
+    {{ HTML::script('packages/jquery/jquery.min.js'); }}
+    {{ HTML::script('packages/bootstrap/dist/js/bootstrap.min.js'); }}
+    {{ HTML::script('packages/moment/moment.js'); }}
+    {{ HTML::script('packages/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'); }}
+    {{ HTML::script('packages/DataTables-1.10.4/media/js/jquery.dataTables.min.js') }}
 
-        {{ HTML::style('packages/bootstrap/dist/css/bootstrap.min.css'); }}
-        {{ HTML::style('packages/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'); }}
-        {{ HTML::style('css/site_styles.css'); }}
+    {{ HTML::style('packages/bootstrap/dist/css/bootstrap.min.css'); }}
+    {{ HTML::style('packages/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'); }}
+    {{ HTML::style('packages/DataTables-1.10.4/media/css/jquery.dataTables.min.css') }}
+    {{ HTML::style('css/site_styles.css'); }}
 
-    </head>
-    <body>
-        <div class="container" id="site_container">
-            @yield('content')
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 logo">
+            <a href='/'>{{HTML::image('images/cccom_logo.gif', 'Creditcards.com')}}</a>
         </div>
-    </body>
+        <div class="col-lg-8 text-center">
+            <h1>Conference Room Scheduling System</h1>
+        </div>
+    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="nav navbar-nav">
+                        <li>{{ HTML::link(url('/'), 'Home') }}</li>
+                        <li>{{ HTML::link(url('events'), 'Events') }}</li>
+                        <li>{{ HTML::link(url('locations'), 'Locations') }}</li>
+                        <li>{{ HTML::link(url('users'), 'Users') }}</li>
+                        <li>{{ HTML::link(url('help'), 'Help') }}</li>
+                        <li>{{ HTML::link(url('logout'), 'Logout') }}</li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+
+    </nav>
+
+    @if (Session::has('success'))
+        <div class="alert alert-success text-center">{{Session::get('success');}}</div>
+    @elseif(Session::has('error'))
+        <div class="alert alert-danger text-center">{{Session::get('error');}}</div>
+    @endif
+
+    @if(Session::has('errors'))
+        <div class="alert alert-danger text-center">
+            @foreach ($errors->all('<li>:message</li>') as $message)
+                {{$message}}
+            @endforeach
+        </div>
+    @endif
+
+    @yield('content')
+
+    <footer>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <p>Copyright&copy {{ HTML::link('http://www.creditcards.com', 'Creditcards.com') }} 2014</p>
+            </div>
+        </div>
+    </footer>
+</div><!--container-->
+
+</body>
 </html>
+
+<script>
+    //Fade all messages out over 5 seconds.
+    $('.alert').fadeOut(5000);
+
+    $(document).ready(function() {
+        $('.datatable').DataTable();
+    })
+</script>

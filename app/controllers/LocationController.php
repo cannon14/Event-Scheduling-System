@@ -22,7 +22,7 @@ class LocationController extends BaseController {
     {
         $locations = Location::all();
 
-        return View::make('locations.index')->with('locations', $locations);
+        return View::make('locations.index')->with(array('locations'=>$locations));
     }
 
 
@@ -58,12 +58,11 @@ class LocationController extends BaseController {
     {
         $location = Location::find($id);
         $users = User::all();
-
-        $events = Events::whereRaw('location_id = ? and end_dtg > NOW()', array($id))->get();
+        $events = Events::where('location_id','=', $id)->where('end_dtg','>', 'NOW()')->get();
 
         //dd(DB::getQueryLog());
 
-        return View::make('location')->with('location', $location)->with('events', $events)->with('users', $users);
+        return View::make('location')->with(array('location'=>$location, 'events'=>$events, 'users'=>$users));
     }
 
 

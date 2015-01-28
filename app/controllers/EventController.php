@@ -28,7 +28,7 @@ class EventController extends BaseController {
      */
     public function create()
     {
-        //
+        return View::make('events.create');
     }
 
 
@@ -51,7 +51,7 @@ class EventController extends BaseController {
      */
     public function show($id)
     {
-        //
+        return View::make('events.show');
     }
 
 
@@ -63,7 +63,7 @@ class EventController extends BaseController {
      */
     public function edit($id)
     {
-        //
+        return View::make('events.edit');
     }
 
 
