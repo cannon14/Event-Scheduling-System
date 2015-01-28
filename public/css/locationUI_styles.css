@@ -1,0 +1,51 @@
+body {
+    background-color: #87ae4b;
+}
+#current_event_time {
+    font-size: 36px;
+}
+#current_name {
+    font-size: 24px;
+}
+#current_department {
+    font-size: 24px;
+}
+
+#next_date_time {
+    font-size:36px;
+}
+#next_name {
+    font-size: 24px;
+}
+#next_department {
+    font-size: 24px;
+}
+
+#location_name {
+    font-size: 72px;
+    font-weight: bold;
+    padding-top:50px;
+    padding-bottom:50px;
+}
+#status_row {
+    color:#ffffff;
+    font-size: 96px;
+    font-weight: bold;
+    padding-top:50px;
+    padding-bottom:50px;
+    border:thick inset black;
+}
+#current_event_timer {
+    font-size: 72px;
+}
+#control_row div {
+    padding-top:25px;
+    padding-bottom:25px;
+}
+
+#control_row .btn {
+    width:100px;
+    height:100px;
+    margin-left:10px;
+    margin-right:10px;
+}
