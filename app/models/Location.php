@@ -6,8 +6,6 @@
  * Time: 5:26 PM
  */
 
-namespace CCCOM;
-
 class Location extends Eloquent {
 
     /**

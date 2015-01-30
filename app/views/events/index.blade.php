@@ -38,9 +38,15 @@
                             <td>{{$event->start_dtg}}</td>
                             <td>{{$event->end_dtg}}</td>
                             <td>
-                                <a href="#"><span class="glyphicon glyphicon-search"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                                {{ Form::open(array('url' => url('events/'.$event->event_id), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('events/'.$event->event_id.'/edit'), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-pencil"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('events/'.$event->event_id), 'method' => 'DELETE', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                                {{ Form::close() }}
                             </td>
                         </tr>
                     @endforeach

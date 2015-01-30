@@ -10,13 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::resource('locations', 'LocationController');
 
-Route::resource('users', 'UserController');
-
-Route::resource('events', 'EventController');
-
-Route::get('/', "SiteController@showIndex");
 
 //Standard application routes.
 Route::get('login', 'SiteController@showLogin');
@@ -31,8 +25,12 @@ Route::post('password/reset', 'RemindersController@postReset');
 
 //Administrative routes
 Route::group(array('before'=>'auth'), function() {
+    Route::resource('locations', 'LocationController');
+    Route::resource('users', 'UserController');
+    Route::resource('events', 'EventController');
+    Route::get('/', "SiteController@showIndex");
 
-
+    Route::get('location/{location_id}', 'locationInterfaceController@showInterface');
 });
 
 App::missing(function($exception)  {

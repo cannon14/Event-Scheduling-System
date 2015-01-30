@@ -39,9 +39,15 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->telephone}}</td>
                             <td>
-                                <a href="#"><span class="glyphicon glyphicon-search"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                                {{ Form::open(array('url' => url('users/'.$user->user_id), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('users/'.$user->user_id.'/edit'), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-pencil"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('users/'.$user->user_id), 'method' => 'DELETE', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                                {{ Form::close() }}
                             </td>
                         </tr>
                     @endforeach

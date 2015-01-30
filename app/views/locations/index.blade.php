@@ -31,9 +31,15 @@
                             <td>{{$location->name}}</td>
                             <td>{{$location->capacity}}</td>
                             <td>
-                                <a href="#"><span class="glyphicon glyphicon-search"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                                {{ Form::open(array('url' => url('locations/'.$location->location_id), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('locations/'.$location->location_id.'/edit'), 'method' => 'GET', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-pencil"></span></button>
+                                {{ Form::close() }}
+                                {{ Form::open(array('url' => url('locations/'.$location->location_id), 'method' => 'DELETE', 'class'=>'action_buttons')) }}
+                                <button type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                                {{ Form::close() }}
                             </td>
                         </tr>
                     @endforeach

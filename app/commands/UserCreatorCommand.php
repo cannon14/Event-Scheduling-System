@@ -34,17 +34,17 @@ class UserCreatorCommand extends Command {
 	 * @return mixed
 	 */
 	public function fire() {
-		$username = $this->argument('username');
+		$email = $this->argument('email');
 		$password = $this->argument('password');
         $acl_id = $this->argument('acl_id');
 
 		$user = new User();
-		$user->username = $username;
+		$user->email = $email;
 		$user->password = Hash::make($password);
         $user->acl_id = $acl_id;
 		$user->save();
 
-		$this->info("User <fg=white>{$username}</fg=white> was created");
+		$this->info("User <fg=white>{$email}</fg=white> was created");
 	}
 
 	/**
@@ -54,7 +54,7 @@ class UserCreatorCommand extends Command {
 	 */
 	protected function getArguments() {
 		return array(
-			array('username', InputArgument::REQUIRED, 'Desired username'),
+			array('email', InputArgument::REQUIRED, 'Desired email'),
 			array('password', InputArgument::REQUIRED, 'Desired password'),
             array('acl_id', InputArgument::REQUIRED, 'Desired Access Control List Id')
 		);

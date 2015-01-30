@@ -1,5 +1,4 @@
 <?php
-namespace CCCOM;
 
 use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;

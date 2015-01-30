@@ -16,6 +16,7 @@ public function up() {
 
     Schema::create('users', function($table) {
         $table->increments('user_id');
+        $table->integer('acl_id');
         $table->string('title', 25);
         $table->string('password', 64);
         $table->string('firstname', 25);

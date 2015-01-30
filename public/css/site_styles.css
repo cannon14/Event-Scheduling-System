@@ -1,3 +1,5 @@
-#site_container {
-    min-width: 390px;
+.action_buttons {
+    display:inline-block;
+    margin-left:3px;
+    margin-right:3px;
 }

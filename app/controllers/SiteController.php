@@ -9,7 +9,9 @@ class SiteController extends BaseController {
 
 
 	public function showIndex() {
-		return View::make('index.index');
+		$locations = Location::all();
+
+		return View::make('index.index')->with(array('locations'=>$locations));
 	}
 
 	public function showLogin() {
@@ -18,7 +20,7 @@ class SiteController extends BaseController {
 
 	public function doLogin() {
 		// validate the info, create rules for the inputs
-		$rules = array('username' => 'required|min:3', // make sure the username is present
+		$rules = array('email' => 'required|email', // make sure the username is present
 			'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
 		);
 
@@ -32,7 +34,7 @@ class SiteController extends BaseController {
 		}
 		else {
 			// create our user data for the authentication
-			$userdata = array('username' => Input::get('username'), 'password' => Input::get('password'));
+			$userdata = array('email' => Input::get('email'), 'password' => Input::get('password'));
 
 			// attempt to do the login
 			if (Auth::attempt($userdata)) {
@@ -41,7 +43,7 @@ class SiteController extends BaseController {
 			}
 			else {
 				// validation not successful, send back to form
-				return Redirect::to('login')->with('error', 'Username and/or Password is incorrect!');
+				return Redirect::to('login')->with('error', 'Email and/or Password is incorrect!');
 			}
 		}
 	}
@@ -49,38 +51,5 @@ class SiteController extends BaseController {
 	public function doLogout() {
 		Auth::logout(); // log the user out of our application
 		return Redirect::to('login')->with('success', 'Your are now logged out!');
-	}
-
-	/**
-	 * Show help/documentation for the application.
-	 * @return mixed
-	 */
-	public function showHelp() {
-		return View::make('static.help');
-	}
-
-	/**
-	 * Flush all cached data.
-	 * @return mixed
-	 */
-	public function flushCache() {
-		Cache::flush();
-
-		return Redirect::back()->with('success', 'Cached has been flushed!');
-	}
-
-	/**
-	 * Sometimes an error might occur that won't allow the job to get to 100%, so it must be deleted.  This only deletes
-	 * the job from the database, not the daemon.  You must let that run its course.
-	 * @return mixed
-	 */
-	public function deleteAllJobs() {
-		$jobs = Job::all();
-
-		foreach($jobs as $job) {
-			$job->delete();
-		}
-
-		return Redirect::back()->with('success', 'All Jobs Have Been Deleted!');
 	}
 }

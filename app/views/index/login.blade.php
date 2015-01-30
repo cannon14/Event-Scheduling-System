@@ -1,5 +1,4 @@
-@extends('layouts.main')
-
+@extends('layouts.master')
 @section('content')
 
 <div class="row">
@@ -13,8 +12,8 @@
 
                 {{ Form::open(array('url' => 'login')) }}
                     <p>
-                        {{ Form::label('username', 'Username') }}
-                        {{ Form::text('username', Input::old('username')) }}
+                        {{ Form::label('email', 'Email') }}
+                        {{ Form::text('email', Input::old('email')) }}
                     </p>
 
                     <p>

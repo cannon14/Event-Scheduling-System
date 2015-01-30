@@ -8,7 +8,7 @@
 
 namespace CCCOM;
 
-class Event extends Eloquent {
+class Event extends \Eloquent {
 
     /**
      * The database table used by the model.

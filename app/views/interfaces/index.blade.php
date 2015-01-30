@@ -1,24 +1,31 @@
-@extends('layouts.master')
+@extends('layouts.interface')
 
 @section('content')
 
-{{ HTML::style('css/locationUI_styles.css'); }}
+{{ HTML::style('css/interface_styles.css'); }}
 
 <div class="row text-center">
     <div class="col-lg-4">
         <h2>Current Meeting</h2>
-
-        <div id="current_name">David Cannon</div>
-        <div id="current_department">Technology</div>
+        @if($currentEvent != null)
+            <div id="current_name">{{$currentEvent->user->firstname . " " . $currentEvent->user->lastname}}</div>
+            <div id="current_department">{{$currentEvent->department}}</div>
+        @else
+            <div>None Scheduled!</div>
+        @endif
     </div>
     <div class="col-lg-4">
-        <div id="location_name">{{$location->name}}</div>
+        <div id="location_name">{{$location->location_name}}</div>
     </div>
     <div class="col-lg-4">
         <h2>Next Meeting</h2>
-        <div id="next_date_time">{{0 //$nextEvent->start_dtg}}</div>
-        <div id="next_name">{{0 //$nextEvent->user->fname . " " . $nextEvent->user->lname}}</div>
-        <div id="next_department">{{0 //$nextEvent->user->department}}</div>
+        @if($nextEvent != null)
+            <div id="next_date_time">{{$nextEvent->start_dtg}}</div>
+            <div id="next_name">{{$nextEvent->user->firstname . " " . $nextEvent->user->lastname}}</div>
+            <div id="next_department">{{$nextEvent->user->department}}</div>
+        @else
+            <div>None Scheduled!</div>
+        @endif
     </div>
 </div>
 

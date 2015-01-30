@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Creditcards.com User Reviews Manager</title>
+    <title>Creditcards.com Event Scheduling System</title>
     <meta charset="UTF-8">
-    <meta name="application-name" content="Widget Factory">
-    <meta name="description" content="Application for making and deploying custom widgets">
+    <meta name="application-name" content="Event Scheduling System">
+    <meta name="description" content="Application to schedule events">
     <meta name="keywords" content="HTML,CSS,XML,JavaScript">
     <meta name="author" content="CreditCards.com">
     <meta name="copyright" content="Copyright <?= date("Y"); ?> CreditCards.com">
@@ -32,6 +32,8 @@
             <h1>Conference Room Scheduling System</h1>
         </div>
     </div>
+
+    @if(Auth::check())
     <nav class="navbar navbar-default" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -56,8 +58,8 @@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
-
     </nav>
+    @endif
 
     @if (Session::has('success'))
         <div class="alert alert-success text-center">{{Session::get('success');}}</div>
@@ -73,7 +75,9 @@
         </div>
     @endif
 
+    <div class="container">
     @yield('content')
+    </div><!--container-->
 
     <footer>
         <div class="row">
