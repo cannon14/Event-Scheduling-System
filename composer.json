@@ -22,7 +22,7 @@
 			"app/tests/TestCase.php"
 		],
         "psr-4": {
-            "Creditcards\\": "app/Creditcards"
+            "CCCOM\\": "app/CCCOM"
         }
 	},
 	"scripts": {
