@@ -19,6 +19,7 @@
 					<tr>
 						<th>Event ID</th>
 						<th>Name</th>
+						<th>Location</th>
 						<th>Description</th>
 						<th>Scheduler</th>
 						<th>Department</th>
@@ -32,6 +33,7 @@
 						<tr>
 							<td>{{$event->event_id}}</td>
 							<td>{{$event->event_name}}</td>
+							<td>{{$event->location->location_name}}</td>
 							<td>{{$event->event_description}}</td>
 							<td>{{$event->user->firstname.' '.$event->user->lastname}}</td>
 							<td>{{$event->department->department_name}}</td>

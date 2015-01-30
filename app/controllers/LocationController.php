@@ -47,7 +47,29 @@ class LocationController extends BaseController
 	 */
 	public function store()
 	{
-		//
+		//Validation Rules
+		$rules = array('location_name' => 'required');
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			// send back all errors to the login form
+			return Redirect::back()->withInput()->withErrors($validator);
+		}
+
+		//If Validation passed, create an event and assign the variables.
+		$location = new Location();
+		$location->location_name = Input::get('location_name', '');
+		$location->location_capacity = Input::get('location_capacity', '');
+
+		//Try and save event and report status to view.
+		if ($location->save()) {
+			return Redirect::to('locations')->with('success', 'Location Successfully Created!');
+		} else {
+			return Redirect::to('locations')->with('error', 'Error Creating Location! Try Again Later!');
+		}
 	}
 
 
@@ -65,8 +87,7 @@ class LocationController extends BaseController
 
 		//dd(DB::getQueryLog());
 
-		return View::make('locations.show')->with(array('location' => $location, 'events' => $events, 'users' =>
-			$users));
+		return View::make('locations.show')->with(array('location' => $location, 'events' => $events, 'users' => $users));
 	}
 
 
@@ -78,7 +99,9 @@ class LocationController extends BaseController
 	 */
 	public function edit($id)
 	{
-		return View::make('locations.edit');
+		$location = Location::find($id);
+
+		return View::make('locations.edit')->with(array('location' => $location));
 	}
 
 
@@ -90,7 +113,29 @@ class LocationController extends BaseController
 	 */
 	public function update($id)
 	{
-		//
+		//Validation Rules
+		$rules = array('location_name' => 'required');
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			// send back all errors to the login form
+			return Redirect::back()->withInput()->withErrors($validator);
+		}
+
+		//If Validation passed, create an event and assign the variables.
+		$location = Location::find($id);
+		$location->location_name = Input::get('location_name');
+		$location->location_capacity = Input::get('location_capacity');
+
+		//Try and save event and report status to view.
+		if ($location->save()) {
+			return Redirect::to('locations')->with('success', 'Location Successfully Updated!');
+		} else {
+			return Redirect::to('locations')->with('error', 'Error Updating Location! Try Again Later!');
+		}
 	}
 
 
@@ -102,7 +147,14 @@ class LocationController extends BaseController
 	 */
 	public function destroy($id)
 	{
-		//
+		$location = Location::find($id);
+
+		//Try and save event and report status to view.
+		if ($location->delete()) {
+			return Redirect::to('locations')->with('success', 'Location Successfully Deleted!');
+		} else {
+			return Redirect::to('locations')->with('error', 'Error Deleting Location! Try Again Later!');
+		}
 	}
 
 } 

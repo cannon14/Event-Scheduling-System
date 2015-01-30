@@ -63,4 +63,8 @@ class SiteController extends BaseController
 		Auth::logout(); // log the user out of our application
 		return Redirect::to('login')->with('success', 'Your are now logged out!');
 	}
+
+	public function showHelp() {
+		return View::make('index.help');
+	}
 }
