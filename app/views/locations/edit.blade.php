@@ -2,6 +2,6 @@
 
 @section('content')
 
-    <h2>Edit Location</h2>
+	<h2>Edit Location</h2>
 
 @stop

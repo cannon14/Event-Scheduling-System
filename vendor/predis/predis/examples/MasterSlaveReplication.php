@@ -21,10 +21,7 @@ require 'SharedConfigurations.php';
 // of the first one using the SLAVEOF command.
 //
 
-$parameters = array(
-    'tcp://127.0.0.1:6379?database=15&alias=master',
-    'tcp://127.0.0.1:6380?database=15&alias=slave',
-);
+$parameters = array('tcp://127.0.0.1:6379?database=15&alias=master', 'tcp://127.0.0.1:6380?database=15&alias=slave',);
 
 $options = array('replication' => true);
 

@@ -2,7 +2,8 @@
 
 use Illuminate\Hashing\HasherInterface;
 
-class EloquentUserProvider implements UserProviderInterface {
+class EloquentUserProvider implements UserProviderInterface
+{
 
 	/**
 	 * The hasher implementation.
@@ -21,8 +22,8 @@ class EloquentUserProvider implements UserProviderInterface {
 	/**
 	 * Create a new database user provider.
 	 *
-	 * @param  \Illuminate\Hashing\HasherInterface  $hasher
-	 * @param  string  $model
+	 * @param  \Illuminate\Hashing\HasherInterface $hasher
+	 * @param  string $model
 	 * @return void
 	 */
 	public function __construct(HasherInterface $hasher, $model)
@@ -34,7 +35,7 @@ class EloquentUserProvider implements UserProviderInterface {
 	/**
 	 * Retrieve a user by their unique identifier.
 	 *
-	 * @param  mixed  $identifier
+	 * @param  mixed $identifier
 	 * @return \Illuminate\Auth\UserInterface|null
 	 */
 	public function retrieveById($identifier)
@@ -45,25 +46,22 @@ class EloquentUserProvider implements UserProviderInterface {
 	/**
 	 * Retrieve a user by their unique identifier and "remember me" token.
 	 *
-	 * @param  mixed  $identifier
-	 * @param  string  $token
+	 * @param  mixed $identifier
+	 * @param  string $token
 	 * @return \Illuminate\Auth\UserInterface|null
 	 */
 	public function retrieveByToken($identifier, $token)
 	{
 		$model = $this->createModel();
 
-		return $model->newQuery()
-                        ->where($model->getKeyName(), $identifier)
-                        ->where($model->getRememberTokenName(), $token)
-                        ->first();
+		return $model->newQuery()->where($model->getKeyName(), $identifier)->where($model->getRememberTokenName(), $token)->first();
 	}
 
 	/**
 	 * Update the "remember me" token for the given user in storage.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  string  $token
+	 * @param  \Illuminate\Auth\UserInterface $user
+	 * @param  string $token
 	 * @return void
 	 */
 	public function updateRememberToken(UserInterface $user, $token)
@@ -76,7 +74,7 @@ class EloquentUserProvider implements UserProviderInterface {
 	/**
 	 * Retrieve a user by the given credentials.
 	 *
-	 * @param  array  $credentials
+	 * @param  array $credentials
 	 * @return \Illuminate\Auth\UserInterface|null
 	 */
 	public function retrieveByCredentials(array $credentials)
@@ -86,9 +84,9 @@ class EloquentUserProvider implements UserProviderInterface {
 		// Eloquent User "model" that will be utilized by the Guard instances.
 		$query = $this->createModel()->newQuery();
 
-		foreach ($credentials as $key => $value)
-		{
-			if ( ! str_contains($key, 'password')) $query->where($key, $value);
+		foreach ($credentials as $key => $value) {
+			if (!str_contains($key, 'password'))
+				$query->where($key, $value);
 		}
 
 		return $query->first();
@@ -97,8 +95,8 @@ class EloquentUserProvider implements UserProviderInterface {
 	/**
 	 * Validate a user against the given credentials.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  array  $credentials
+	 * @param  \Illuminate\Auth\UserInterface $user
+	 * @param  array $credentials
 	 * @return bool
 	 */
 	public function validateCredentials(UserInterface $user, array $credentials)
@@ -115,7 +113,7 @@ class EloquentUserProvider implements UserProviderInterface {
 	 */
 	public function createModel()
 	{
-		$class = '\\'.ltrim($this->model, '\\');
+		$class = '\\' . ltrim($this->model, '\\');
 
 		return new $class;
 	}

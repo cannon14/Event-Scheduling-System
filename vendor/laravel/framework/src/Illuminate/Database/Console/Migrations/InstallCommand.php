@@ -4,7 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 
-class InstallCommand extends Command {
+class InstallCommand extends Command
+{
 
 	/**
 	 * The console command name.
@@ -30,7 +31,7 @@ class InstallCommand extends Command {
 	/**
 	 * Create a new migration install command instance.
 	 *
-	 * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
+	 * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface $repository
 	 * @return void
 	 */
 	public function __construct(MigrationRepositoryInterface $repository)
@@ -61,9 +62,7 @@ class InstallCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return array(
-			array('database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'),
-		);
+		return array(array('database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'),);
 	}
 
 }

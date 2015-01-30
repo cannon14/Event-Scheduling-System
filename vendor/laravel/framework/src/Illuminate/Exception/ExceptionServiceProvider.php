@@ -5,7 +5,8 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Illuminate\Support\ServiceProvider;
 
-class ExceptionServiceProvider extends ServiceProvider {
+class ExceptionServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Register the service provider.
@@ -38,8 +39,7 @@ class ExceptionServiceProvider extends ServiceProvider {
 	 */
 	protected function registerHandler()
 	{
-		$this->app['exception'] = $this->app->share(function($app)
-		{
+		$this->app['exception'] = $this->app->share(function ($app) {
 			return new Handler($app, $app['exception.plain'], $app['exception.debug']);
 		});
 	}
@@ -51,17 +51,13 @@ class ExceptionServiceProvider extends ServiceProvider {
 	 */
 	protected function registerPlainDisplayer()
 	{
-		$this->app['exception.plain'] = $this->app->share(function($app)
-		{
+		$this->app['exception.plain'] = $this->app->share(function ($app) {
 			// If the application is running in a console environment, we will just always
 			// use the debug handler as there is no point in the console ever returning
 			// out HTML. This debug handler always returns JSON from the console env.
-			if ($app->runningInConsole())
-			{
+			if ($app->runningInConsole()) {
 				return $app['exception.debug'];
-			}
-			else
-			{
+			} else {
 				return new PlainDisplayer;
 			}
 		});
@@ -76,8 +72,7 @@ class ExceptionServiceProvider extends ServiceProvider {
 	{
 		$this->registerWhoops();
 
-		$this->app['exception.debug'] = $this->app->share(function($app)
-		{
+		$this->app['exception.debug'] = $this->app->share(function ($app) {
 			return new WhoopsDisplayer($app['whoops'], $app->runningInConsole());
 		});
 	}
@@ -91,8 +86,7 @@ class ExceptionServiceProvider extends ServiceProvider {
 	{
 		$this->registerWhoopsHandler();
 
-		$this->app['whoops'] = $this->app->share(function($app)
-		{
+		$this->app['whoops'] = $this->app->share(function ($app) {
 			// We will instruct Whoops to not exit after it displays the exception as it
 			// will otherwise run out before we can do anything else. We just want to
 			// let the framework go ahead and finish a request on this end instead.
@@ -111,15 +105,11 @@ class ExceptionServiceProvider extends ServiceProvider {
 	 */
 	protected function registerWhoopsHandler()
 	{
-		if ($this->shouldReturnJson())
-		{
-			$this->app['whoops.handler'] = $this->app->share(function()
-			{
+		if ($this->shouldReturnJson()) {
+			$this->app['whoops.handler'] = $this->app->share(function () {
 				return new JsonResponseHandler;
 			});
-		}
-		else
-		{
+		} else {
 			$this->registerPrettyWhoopsHandler();
 		}
 	}
@@ -151,8 +141,7 @@ class ExceptionServiceProvider extends ServiceProvider {
 	 */
 	protected function registerPrettyWhoopsHandler()
 	{
-		$this->app['whoops.handler'] = $this->app->share(function()
-		{
+		$this->app['whoops.handler'] = $this->app->share(function () {
 			with($handler = new PrettyPageHandler)->setEditor('sublime');
 
 			return $handler;

@@ -3,7 +3,8 @@
 use Illuminate\Database\Connection;
 use Illuminate\Encryption\Encrypter;
 
-class DatabaseStore implements StoreInterface {
+class DatabaseStore implements StoreInterface
+{
 
 	/**
 	 * The database connection instance.
@@ -36,10 +37,10 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Create a new database store.
 	 *
-	 * @param  \Illuminate\Database\Connection  $connection
-	 * @param  \Illuminate\Encryption\Encrypter  $encrypter
-	 * @param  string  $table
-	 * @param  string  $prefix
+	 * @param  \Illuminate\Database\Connection $connection
+	 * @param  \Illuminate\Encryption\Encrypter $encrypter
+	 * @param  string $table
+	 * @param  string $prefix
 	 * @return void
 	 */
 	public function __construct(Connection $connection, Encrypter $encrypter, $table, $prefix = '')
@@ -53,24 +54,23 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Retrieve an item from the cache by key.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return mixed
 	 */
 	public function get($key)
 	{
-		$prefixed = $this->prefix.$key;
+		$prefixed = $this->prefix . $key;
 
 		$cache = $this->table()->where('key', '=', $prefixed)->first();
 
 		// If we have a cache record we will check the expiration time against current
 		// time on the system and see if the record has expired. If it has, we will
 		// remove the records from the database table so it isn't returned again.
-		if ( ! is_null($cache))
-		{
-			if (is_array($cache)) $cache = (object) $cache;
+		if (!is_null($cache)) {
+			if (is_array($cache))
+				$cache = (object)$cache;
 
-			if (time() >= $cache->expiration)
-			{
+			if (time() >= $cache->expiration) {
 				$this->forget($key);
 
 				return null;
@@ -83,14 +83,14 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Store an item in the cache for a given number of minutes.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
-	 * @param  int     $minutes
+	 * @param  string $key
+	 * @param  mixed $value
+	 * @param  int $minutes
 	 * @return void
 	 */
 	public function put($key, $value, $minutes)
 	{
-		$key = $this->prefix.$key;
+		$key = $this->prefix . $key;
 
 		// All of the cached values in the database are encrypted in case this is used
 		// as a session data store by the consumer. We'll also calculate the expire
@@ -99,12 +99,9 @@ class DatabaseStore implements StoreInterface {
 
 		$expiration = $this->getTime() + ($minutes * 60);
 
-		try
-		{
+		try {
 			$this->table()->insert(compact('key', 'value', 'expiration'));
-		}
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			$this->table()->where('key', '=', $key)->update(compact('value', 'expiration'));
 		}
 	}
@@ -112,8 +109,8 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Increment the value of an item in the cache.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 *
 	 * @throws \LogicException
@@ -126,8 +123,8 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Increment the value of an item in the cache.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 *
 	 * @throws \LogicException
@@ -150,8 +147,8 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Store an item in the cache indefinitely.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 */
 	public function forever($key, $value)
@@ -162,12 +159,12 @@ class DatabaseStore implements StoreInterface {
 	/**
 	 * Remove an item from the cache.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return void
 	 */
 	public function forget($key)
 	{
-		$this->table()->where('key', '=', $this->prefix.$key)->delete();
+		$this->table()->where('key', '=', $this->prefix . $key)->delete();
 	}
 
 	/**

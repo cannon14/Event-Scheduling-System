@@ -29,7 +29,7 @@ use Predis\Replication\ReplicationStrategy;
 
 class HashMultipleGetAll extends ScriptedCommand
 {
-    const BODY = <<<EOS
+	const BODY = <<<EOS
 local hashes = {}
 for _, key in pairs(KEYS) do
     table.insert(hashes, key)
@@ -38,35 +38,29 @@ end
 return hashes
 EOS;
 
-    public function getScript()
-    {
-        return self::BODY;
-    }
+	public function getScript()
+	{
+		return self::BODY;
+	}
 }
 
 // ------------------------------------------------------------------------- //
 
-$parameters = array(
-    'tcp://127.0.0.1:6379/?alias=master',
-    'tcp://127.0.0.1:6380/?alias=slave',
-);
+$parameters = array('tcp://127.0.0.1:6379/?alias=master', 'tcp://127.0.0.1:6380/?alias=slave',);
 
-$options = array(
-    'profile' => function ($options, $option) {
-        $profile = $options->getDefault($option);
-        $profile->defineCommand('hmgetall', 'HashMultipleGetAll');
+$options = array('profile' => function ($options, $option) {
+	$profile = $options->getDefault($option);
+	$profile->defineCommand('hmgetall', 'HashMultipleGetAll');
 
-        return $profile;
-    },
-    'replication' => function ($options) {
-        $strategy = new ReplicationStrategy();
-        $strategy->setScriptReadOnly(HashMultipleGetAll::BODY);
+	return $profile;
+}, 'replication' => function ($options) {
+	$strategy = new ReplicationStrategy();
+	$strategy->setScriptReadOnly(HashMultipleGetAll::BODY);
 
-        $replication = new MasterSlaveReplication($strategy);
+	$replication = new MasterSlaveReplication($strategy);
 
-        return $replication;
-    },
-);
+	return $replication;
+},);
 
 // ------------------------------------------------------------------------- //
 

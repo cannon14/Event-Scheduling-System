@@ -3,7 +3,8 @@
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Console\SeedCommand;
 
-class SeedServiceProvider extends ServiceProvider {
+class SeedServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -21,8 +22,7 @@ class SeedServiceProvider extends ServiceProvider {
 	{
 		$this->registerSeedCommand();
 
-		$this->app->bindShared('seeder', function()
-		{
+		$this->app->bindShared('seeder', function () {
 			return new Seeder;
 		});
 
@@ -36,8 +36,7 @@ class SeedServiceProvider extends ServiceProvider {
 	 */
 	protected function registerSeedCommand()
 	{
-		$this->app->bindShared('command.seed', function($app)
-		{
+		$this->app->bindShared('command.seed', function ($app) {
 			return new SeedCommand($app['db']);
 		});
 	}

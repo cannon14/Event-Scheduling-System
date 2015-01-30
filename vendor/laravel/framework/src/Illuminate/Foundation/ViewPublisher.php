@@ -2,7 +2,8 @@
 
 use Illuminate\Filesystem\Filesystem;
 
-class ViewPublisher {
+class ViewPublisher
+{
 
 	/**
 	 * The filesystem instance.
@@ -28,8 +29,8 @@ class ViewPublisher {
 	/**
 	 * Create a new view publisher instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
-	 * @param  string  $publishPath
+	 * @param  \Illuminate\Filesystem\Filesystem $files
+	 * @param  string $publishPath
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, $publishPath)
@@ -41,13 +42,13 @@ class ViewPublisher {
 	/**
 	 * Publish view files from a given path.
 	 *
-	 * @param  string  $package
-	 * @param  string  $source
+	 * @param  string $package
+	 * @param  string $source
 	 * @return void
 	 */
 	public function publish($package, $source)
 	{
-		$destination = $this->publishPath."/packages/{$package}";
+		$destination = $this->publishPath . "/packages/{$package}";
 
 		$this->makeDestination($destination);
 
@@ -57,8 +58,8 @@ class ViewPublisher {
 	/**
 	 * Publish the view files for a package.
 	 *
-	 * @param  string  $package
-	 * @param  string  $packagePath
+	 * @param  string $package
+	 * @param  string $packagePath
 	 * @return void
 	 */
 	public function publishPackage($package, $packagePath = null)
@@ -71,18 +72,17 @@ class ViewPublisher {
 	/**
 	 * Get the source views directory to publish.
 	 *
-	 * @param  string  $package
-	 * @param  string  $packagePath
+	 * @param  string $package
+	 * @param  string $packagePath
 	 * @return string
 	 *
 	 * @throws \InvalidArgumentException
 	 */
 	protected function getSource($package, $packagePath)
 	{
-		$source = $packagePath."/{$package}/src/views";
+		$source = $packagePath . "/{$package}/src/views";
 
-		if ( ! $this->files->isDirectory($source))
-		{
+		if (!$this->files->isDirectory($source)) {
 			throw new \InvalidArgumentException("Views not found.");
 		}
 
@@ -92,13 +92,12 @@ class ViewPublisher {
 	/**
 	 * Create the destination directory if it doesn't exist.
 	 *
-	 * @param  string  $destination
+	 * @param  string $destination
 	 * @return void
 	 */
 	protected function makeDestination($destination)
 	{
-		if ( ! $this->files->isDirectory($destination))
-		{
+		if (!$this->files->isDirectory($destination)) {
 			$this->files->makeDirectory($destination, 0777, true);
 		}
 	}
@@ -106,7 +105,7 @@ class ViewPublisher {
 	/**
 	 * Set the default package path.
 	 *
-	 * @param  string  $packagePath
+	 * @param  string $packagePath
 	 * @return void
 	 */
 	public function setPackagePath($packagePath)

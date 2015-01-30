@@ -28,25 +28,24 @@ $pubsub->subscribe('control_channel', 'notifications');
 //   ./redis-cli PUBLISH notifications "this is a test"
 //   ./redis-cli PUBLISH control_channel quit_loop
 foreach ($pubsub as $message) {
-    switch ($message->kind) {
-        case 'subscribe':
-            echo "Subscribed to {$message->channel}\n";
-            break;
+	switch ($message->kind) {
+		case 'subscribe':
+			echo "Subscribed to {$message->channel}\n";
+			break;
 
-        case 'message':
-            if ($message->channel == 'control_channel') {
-                if ($message->payload == 'quit_loop') {
-                    echo "Aborting pubsub loop...\n";
-                    $pubsub->unsubscribe();
-                } else {
-                    echo "Received an unrecognized command: {$message->payload}.\n";
-                }
-            } else {
-                echo "Received the following message from {$message->channel}:\n",
-                     "  {$message->payload}\n\n";
-            }
-            break;
-    }
+		case 'message':
+			if ($message->channel == 'control_channel') {
+				if ($message->payload == 'quit_loop') {
+					echo "Aborting pubsub loop...\n";
+					$pubsub->unsubscribe();
+				} else {
+					echo "Received an unrecognized command: {$message->payload}.\n";
+				}
+			} else {
+				echo "Received the following message from {$message->channel}:\n", "  {$message->payload}\n\n";
+			}
+			break;
+	}
 }
 
 // Always unset the pubsub context instance when you are done! The

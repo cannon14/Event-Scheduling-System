@@ -2,7 +2,8 @@
 
 use Illuminate\Console\Application as ConsoleApplication;
 
-class Artisan {
+class Artisan
+{
 
 	/**
 	 * The application instance.
@@ -21,7 +22,7 @@ class Artisan {
 	/**
 	 * Create a new Artisan command runner instance.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $app
+	 * @param  \Illuminate\Foundation\Application $app
 	 * @return void
 	 */
 	public function __construct(Application $app)
@@ -36,7 +37,8 @@ class Artisan {
 	 */
 	protected function getArtisan()
 	{
-		if ( ! is_null($this->artisan)) return $this->artisan;
+		if (!is_null($this->artisan))
+			return $this->artisan;
 
 		$this->app->loadDeferredProviders();
 
@@ -48,8 +50,8 @@ class Artisan {
 	/**
 	 * Dynamically pass all missing methods to console Artisan.
 	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
+	 * @param  string $method
+	 * @param  array $parameters
 	 * @return mixed
 	 */
 	public function __call($method, $parameters)

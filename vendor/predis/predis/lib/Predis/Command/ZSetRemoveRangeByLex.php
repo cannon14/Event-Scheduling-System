@@ -17,11 +17,11 @@ namespace Predis\Command;
  */
 class ZSetRemoveRangeByLex extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'ZREMRANGEBYLEX';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'ZREMRANGEBYLEX';
+	}
 }

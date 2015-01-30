@@ -28,4 +28,4 @@ If your browser (or those of your users) is displaying characters wrong, chances
     });
 
 .. figure:: _static/screenshots/option_language.png
-    :align: center
+:align: center

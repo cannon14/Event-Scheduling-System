@@ -8,33 +8,28 @@
 use CCCOM\Event;
 
 
-class locationInterfaceController Extends BaseController {
+class locationInterfaceController Extends BaseController
+{
 
-    /**
-     * The layout that should be used for responses.
-     */
-    protected $layout = 'layouts.master';
+	/**
+	 * The layout that should be used for responses.
+	 */
+	protected $layout = 'layouts.master';
 
-    public function showInterface($id) {
-        //Get data for current location
-        $location = Location::find($id);
-        $events = Event::where('location_id','=',$id)
-            ->where('start_dtg','<=','NOW()')
-            ->orderBy('start_dtg')
-            ->get();
+	public function showInterface($id)
+	{
+		//Get data for current location
+		$location = Location::find($id);
+		$events = Event::where('location_id', '=', $id)->where('start_dtg', '<=', 'NOW()')->orderBy('start_dtg')->get();
 
-        $currentEvent = isset($events[0]) ? $events[0] : null;
-        $nextEvent = isset($events[1]) ? $events[1] : null;
+		$currentEvent = isset($events[0]) ? $events[0] : null;
+		$nextEvent = isset($events[1]) ? $events[1] : null;
 
-        return View::make('interfaces.index')->with(
-            array('location'=>$location,
-                'currentEvent'=>$currentEvent,
-                'nextEvent'=>$nextEvent
-            )
-        );
-    }
+		return View::make('interfaces.index')->with(array('location' => $location, 'currentEvent' => $currentEvent, 'nextEvent' => $nextEvent));
+	}
 
-    public function checkDatabase($id) {
+	public function checkDatabase($id)
+	{
 
-    }
+	}
 } 

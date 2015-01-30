@@ -5,19 +5,20 @@
  *
  * Inspired by the wonderful "Dotenv" library by Vance Lucas.
  */
-class EnvironmentVariables {
+class EnvironmentVariables
+{
 
 	/**
 	 * The environment loader implementation.
 	 *
-	 * @var \Illuminate\Config\EnvironmentVariablesLoaderInterface  $loader
+	 * @var \Illuminate\Config\EnvironmentVariablesLoaderInterface $loader
 	 */
 	protected $loader;
 
 	/**
 	 * The server environment instance.
 	 *
-	 * @param  \Illuminate\Config\EnvironmentVariablesLoaderInterface  $loader
+	 * @param  \Illuminate\Config\EnvironmentVariablesLoaderInterface $loader
 	 * @return void
 	 */
 	public function __construct(EnvironmentVariablesLoaderInterface $loader)
@@ -28,12 +29,11 @@ class EnvironmentVariables {
 	/**
 	 * Load the server variables for a given environment.
 	 *
-	 * @param  string  $environment
+	 * @param  string $environment
 	 */
 	public function load($environment = null)
 	{
-		foreach ($this->loader->load($environment) as $key => $value)
-		{
+		foreach ($this->loader->load($environment) as $key => $value) {
 			$_ENV[$key] = $value;
 
 			$_SERVER[$key] = $value;

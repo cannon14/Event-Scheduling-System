@@ -17,27 +17,27 @@ namespace Predis\Command;
  */
 class HyperLogLogMerge extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'PFMERGE';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'PFMERGE';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function filterArguments(array $arguments)
-    {
-        return self::normalizeArguments($arguments);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function filterArguments(array $arguments)
+	{
+		return self::normalizeArguments($arguments);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prefixKeys($prefix)
-    {
-        PrefixHelpers::all($this, $prefix);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function prefixKeys($prefix)
+	{
+		PrefixHelpers::all($this, $prefix);
+	}
 }

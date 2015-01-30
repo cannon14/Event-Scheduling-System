@@ -20,16 +20,6 @@ return array(
 
 	'connections' => array(
 
-		'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'event_scheduling_system',
-			'username'  => 'dba',
-			'password'  => 'dba',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
-	),
+		'mysql' => array('driver' => 'mysql', 'host' => 'localhost', 'database' => 'event_scheduling_system', 'username' => 'dba', 'password' => 'dba', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci', 'prefix' => '',),),
 
 );

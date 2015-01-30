@@ -6,7 +6,7 @@ use Jeremeamia\SuperClosure\SerializableClosure;
 
 $greeting = 'Hello';
 $helloWorld = new SerializableClosure(function ($name = 'World') use ($greeting) {
-    echo "{$greeting}, {$name}!\n";
+	echo "{$greeting}, {$name}!\n";
 });
 
 $helloWorld();

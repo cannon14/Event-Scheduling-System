@@ -56,53 +56,49 @@ namespace SebastianBergmann\Diff\LCS;
  */
 class TimeEfficientImplementation implements LongestCommonSubsequence
 {
-    /**
-     * Calculates the longest common subsequence of two arrays.
-     *
-     * @param  array $from
-     * @param  array $to
-     * @return array
-     */
-    public function calculate(array $from, array $to)
-    {
-        $common     = array();
-        $matrix     = array();
-        $fromLength = count($from);
-        $toLength   = count($to);
+	/**
+	 * Calculates the longest common subsequence of two arrays.
+	 *
+	 * @param  array $from
+	 * @param  array $to
+	 * @return array
+	 */
+	public function calculate(array $from, array $to)
+	{
+		$common = array();
+		$matrix = array();
+		$fromLength = count($from);
+		$toLength = count($to);
 
-        for ($i = 0; $i <= $fromLength; ++$i) {
-            $matrix[$i][0] = 0;
-        }
+		for ($i = 0; $i <= $fromLength; ++$i) {
+			$matrix[$i][0] = 0;
+		}
 
-        for ($j = 0; $j <= $toLength; ++$j) {
-            $matrix[0][$j] = 0;
-        }
+		for ($j = 0; $j <= $toLength; ++$j) {
+			$matrix[0][$j] = 0;
+		}
 
-        for ($i = 1; $i <= $fromLength; ++$i) {
-            for ($j = 1; $j <= $toLength; ++$j) {
-                $matrix[$i][$j] = max(
-                    $matrix[$i-1][$j],
-                    $matrix[$i][$j-1],
-                    $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
-                );
-            }
-        }
+		for ($i = 1; $i <= $fromLength; ++$i) {
+			for ($j = 1; $j <= $toLength; ++$j) {
+				$matrix[$i][$j] = max($matrix[$i - 1][$j], $matrix[$i][$j - 1], $from[$i - 1] === $to[$j - 1] ? $matrix[$i - 1][$j - 1] + 1 : 0);
+			}
+		}
 
-        $i = $fromLength;
-        $j = $toLength;
+		$i = $fromLength;
+		$j = $toLength;
 
-        while ($i > 0 && $j > 0) {
-            if ($from[$i-1] === $to[$j-1]) {
-                array_unshift($common, $from[$i-1]);
-                --$i;
-                --$j;
-            } elseif ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
-                --$j;
-            } else {
-                --$i;
-            }
-        }
+		while ($i > 0 && $j > 0) {
+			if ($from[$i - 1] === $to[$j - 1]) {
+				array_unshift($common, $from[$i - 1]);
+				--$i;
+				--$j;
+			} elseif ($matrix[$i][$j - 1] > $matrix[$i - 1][$j]) {
+				--$j;
+			} else {
+				--$i;
+			}
+		}
 
-        return $common;
-    }
+		return $common;
+	}
 }

@@ -2,7 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class TranslationServiceProvider extends ServiceProvider {
+class TranslationServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -20,8 +21,7 @@ class TranslationServiceProvider extends ServiceProvider {
 	{
 		$this->registerLoader();
 
-		$this->app->bindShared('translator', function($app)
-		{
+		$this->app->bindShared('translator', function ($app) {
 			$loader = $app['translation.loader'];
 
 			// When registering the translator component, we'll need to set the default
@@ -44,9 +44,8 @@ class TranslationServiceProvider extends ServiceProvider {
 	 */
 	protected function registerLoader()
 	{
-		$this->app->bindShared('translation.loader', function($app)
-		{
-			return new FileLoader($app['files'], $app['path'].'/lang');
+		$this->app->bindShared('translation.loader', function ($app) {
+			return new FileLoader($app['files'], $app['path'] . '/lang');
 		});
 	}
 

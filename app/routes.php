@@ -24,15 +24,15 @@ Route::post('password/remind', 'RemindersController@postRemind');
 Route::post('password/reset', 'RemindersController@postReset');
 
 //Administrative routes
-Route::group(array('before'=>'auth'), function() {
-    Route::resource('locations', 'LocationController');
-    Route::resource('users', 'UserController');
-    Route::resource('events', 'EventController');
-    Route::get('/', "SiteController@showIndex");
+Route::group(array('before' => 'auth'), function () {
+	Route::resource('locations', 'LocationController');
+	Route::resource('users', 'UserController');
+	Route::resource('events', 'EventController');
+	Route::get('/', "SiteController@showIndex");
 
-    Route::get('location/{location_id}', 'locationInterfaceController@showInterface');
+	Route::get('location/{location_id}', 'locationInterfaceController@showInterface');
 });
 
-App::missing(function($exception)  {
-    return Response::json(array('status'=>404));
+App::missing(function ($exception) {
+	return Response::json(array('status' => 404));
 });

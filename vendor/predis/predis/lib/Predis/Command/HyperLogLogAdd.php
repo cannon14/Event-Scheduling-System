@@ -17,27 +17,27 @@ namespace Predis\Command;
  */
 class HyperLogLogAdd extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'PFADD';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'PFADD';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function filterArguments(array $arguments)
-    {
-        return self::normalizeVariadic($arguments);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function filterArguments(array $arguments)
+	{
+		return self::normalizeVariadic($arguments);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parseResponse($data)
-    {
-        return (bool) $data;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function parseResponse($data)
+	{
+		return (bool)$data;
+	}
 }

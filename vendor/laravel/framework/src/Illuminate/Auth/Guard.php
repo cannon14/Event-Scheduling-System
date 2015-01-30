@@ -6,7 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Session\Store as SessionStore;
 use Symfony\Component\HttpFoundation\Response;
 
-class Guard {
+class Guard
+{
 
 	/**
 	 * The currently authenticated user.
@@ -81,14 +82,12 @@ class Guard {
 	/**
 	 * Create a new authentication guard.
 	 *
-	 * @param  \Illuminate\Auth\UserProviderInterface  $provider
-	 * @param  \Illuminate\Session\Store  $session
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
+	 * @param  \Illuminate\Auth\UserProviderInterface $provider
+	 * @param  \Illuminate\Session\Store $session
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
 	 * @return void
 	 */
-	public function __construct(UserProviderInterface $provider,
-								SessionStore $session,
-								Request $request = null)
+	public function __construct(UserProviderInterface $provider, SessionStore $session, Request $request = null)
 	{
 		$this->session = $session;
 		$this->request = $request;
@@ -102,7 +101,7 @@ class Guard {
 	 */
 	public function check()
 	{
-		return ! is_null($this->user());
+		return !is_null($this->user());
 	}
 
 	/**
@@ -112,7 +111,7 @@ class Guard {
 	 */
 	public function guest()
 	{
-		return ! $this->check();
+		return !$this->check();
 	}
 
 	/**
@@ -122,13 +121,13 @@ class Guard {
 	 */
 	public function user()
 	{
-		if ($this->loggedOut) return;
+		if ($this->loggedOut)
+			return;
 
 		// If we have already retrieved the user for the current request we can just
 		// return it back immediately. We do not want to pull the user data every
 		// request into the method because that would tremendously slow an app.
-		if ( ! is_null($this->user))
-		{
+		if (!is_null($this->user)) {
 			return $this->user;
 		}
 
@@ -139,8 +138,7 @@ class Guard {
 		// request, and if one exists, attempt to retrieve the user using that.
 		$user = null;
 
-		if ( ! is_null($id))
-		{
+		if (!is_null($id)) {
 			$user = $this->provider->retrieveByID($id);
 		}
 
@@ -149,8 +147,7 @@ class Guard {
 		// the application. Once we have a user we can return it to the caller.
 		$recaller = $this->getRecaller();
 
-		if (is_null($user) && ! is_null($recaller))
-		{
+		if (is_null($user) && !is_null($recaller)) {
 			$user = $this->getUserByRecaller($recaller);
 		}
 
@@ -164,12 +161,12 @@ class Guard {
 	 */
 	public function id()
 	{
-		if ($this->loggedOut) return;
+		if ($this->loggedOut)
+			return;
 
 		$id = $this->session->get($this->getName(), $this->getRecallerId());
 
-		if (is_null($id) && $this->user())
-		{
+		if (is_null($id) && $this->user()) {
 			$id = $this->user()->getAuthIdentifier();
 		}
 
@@ -179,18 +176,17 @@ class Guard {
 	/**
 	 * Pull a user from the repository by its recaller ID.
 	 *
-	 * @param  string  $recaller
+	 * @param  string $recaller
 	 * @return mixed
 	 */
 	protected function getUserByRecaller($recaller)
 	{
-		if ($this->validRecaller($recaller) && ! $this->tokenRetrievalAttempted)
-		{
+		if ($this->validRecaller($recaller) && !$this->tokenRetrievalAttempted) {
 			$this->tokenRetrievalAttempted = true;
 
 			list($id, $token) = explode('|', $recaller, 2);
 
-			$this->viaRemember = ! is_null($user = $this->provider->retrieveByToken($id, $token));
+			$this->viaRemember = !is_null($user = $this->provider->retrieveByToken($id, $token));
 
 			return $user;
 		}
@@ -213,8 +209,7 @@ class Guard {
 	 */
 	protected function getRecallerId()
 	{
-		if ($this->validRecaller($recaller = $this->getRecaller()))
-		{
+		if ($this->validRecaller($recaller = $this->getRecaller())) {
 			return head(explode('|', $recaller));
 		}
 	}
@@ -222,12 +217,13 @@ class Guard {
 	/**
 	 * Determine if the recaller cookie is in a valid format.
 	 *
-	 * @param  string  $recaller
+	 * @param  string $recaller
 	 * @return bool
 	 */
 	protected function validRecaller($recaller)
 	{
-		if ( ! is_string($recaller) || ! str_contains($recaller, '|')) return false;
+		if (!is_string($recaller) || !str_contains($recaller, '|'))
+			return false;
 
 		$segments = explode('|', $recaller);
 
@@ -237,13 +233,12 @@ class Guard {
 	/**
 	 * Log a user into the application without sessions or cookies.
 	 *
-	 * @param  array  $credentials
+	 * @param  array $credentials
 	 * @return bool
 	 */
 	public function once(array $credentials = array())
 	{
-		if ($this->validate($credentials))
-		{
+		if ($this->validate($credentials)) {
 			$this->setUser($this->lastAttempted);
 
 			return true;
@@ -255,7 +250,7 @@ class Guard {
 	/**
 	 * Validate a user's credentials.
 	 *
-	 * @param  array  $credentials
+	 * @param  array $credentials
 	 * @return bool
 	 */
 	public function validate(array $credentials = array())
@@ -266,20 +261,22 @@ class Guard {
 	/**
 	 * Attempt to authenticate using HTTP Basic Auth.
 	 *
-	 * @param  string  $field
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
+	 * @param  string $field
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
 	 * @return \Symfony\Component\HttpFoundation\Response|null
 	 */
 	public function basic($field = 'email', Request $request = null)
 	{
-		if ($this->check()) return;
+		if ($this->check())
+			return;
 
 		$request = $request ?: $this->getRequest();
 
 		// If a username is set on the HTTP basic request, we will return out without
 		// interrupting the request lifecycle. Otherwise, we'll need to generate a
 		// request indicating that the given credentials were invalid for login.
-		if ($this->attemptBasic($request, $field)) return;
+		if ($this->attemptBasic($request, $field))
+			return;
 
 		return $this->getBasicResponse();
 	}
@@ -287,16 +284,15 @@ class Guard {
 	/**
 	 * Perform a stateless HTTP Basic login attempt.
 	 *
-	 * @param  string  $field
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
+	 * @param  string $field
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
 	 * @return \Symfony\Component\HttpFoundation\Response|null
 	 */
 	public function onceBasic($field = 'email', Request $request = null)
 	{
 		$request = $request ?: $this->getRequest();
 
-		if ( ! $this->once($this->getBasicCredentials($request, $field)))
-		{
+		if (!$this->once($this->getBasicCredentials($request, $field))) {
 			return $this->getBasicResponse();
 		}
 	}
@@ -304,13 +300,14 @@ class Guard {
 	/**
 	 * Attempt to authenticate using basic authentication.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
-	 * @param  string  $field
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
+	 * @param  string $field
 	 * @return bool
 	 */
 	protected function attemptBasic(Request $request, $field)
 	{
-		if ( ! $request->getUser()) return false;
+		if (!$request->getUser())
+			return false;
 
 		return $this->attempt($this->getBasicCredentials($request, $field));
 	}
@@ -318,8 +315,8 @@ class Guard {
 	/**
 	 * Get the credential array for a HTTP Basic request.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
-	 * @param  string  $field
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
+	 * @param  string $field
 	 * @return array
 	 */
 	protected function getBasicCredentials(Request $request, $field)
@@ -342,9 +339,9 @@ class Guard {
 	/**
 	 * Attempt to authenticate a user using the given credentials.
 	 *
-	 * @param  array  $credentials
-	 * @param  bool   $remember
-	 * @param  bool   $login
+	 * @param  array $credentials
+	 * @param  bool $remember
+	 * @param  bool $login
 	 * @return bool
 	 */
 	public function attempt(array $credentials = array(), $remember = false, $login = true)
@@ -356,9 +353,9 @@ class Guard {
 		// If an implementation of UserInterface was returned, we'll ask the provider
 		// to validate the user against the given credentials, and if they are in
 		// fact valid we'll log the users into the application and return true.
-		if ($this->hasValidCredentials($user, $credentials))
-		{
-			if ($login) $this->login($user, $remember);
+		if ($this->hasValidCredentials($user, $credentials)) {
+			if ($login)
+				$this->login($user, $remember);
 
 			return true;
 		}
@@ -369,27 +366,26 @@ class Guard {
 	/**
 	 * Determine if the user matches the credentials.
 	 *
-	 * @param  mixed  $user
-	 * @param  array  $credentials
+	 * @param  mixed $user
+	 * @param  array $credentials
 	 * @return bool
 	 */
 	protected function hasValidCredentials($user, $credentials)
 	{
-		return ! is_null($user) && $this->provider->validateCredentials($user, $credentials);
+		return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
 	}
 
 	/**
 	 * Fire the attempt event with the arguments.
 	 *
-	 * @param  array  $credentials
-	 * @param  bool   $remember
-	 * @param  bool   $login
+	 * @param  array $credentials
+	 * @param  bool $remember
+	 * @param  bool $login
 	 * @return void
 	 */
 	protected function fireAttemptEvent(array $credentials, $remember, $login)
 	{
-		if ($this->events)
-		{
+		if ($this->events) {
 			$payload = array($credentials, $remember, $login);
 
 			$this->events->fire('auth.attempt', $payload);
@@ -399,13 +395,12 @@ class Guard {
 	/**
 	 * Register an authentication attempt event listener.
 	 *
-	 * @param  mixed  $callback
+	 * @param  mixed $callback
 	 * @return void
 	 */
 	public function attempting($callback)
 	{
-		if ($this->events)
-		{
+		if ($this->events) {
 			$this->events->listen('auth.attempt', $callback);
 		}
 	}
@@ -413,8 +408,8 @@ class Guard {
 	/**
 	 * Log a user into the application.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  bool  $remember
+	 * @param  \Illuminate\Auth\UserInterface $user
+	 * @param  bool $remember
 	 * @return void
 	 */
 	public function login(UserInterface $user, $remember = false)
@@ -424,8 +419,7 @@ class Guard {
 		// If the user should be permanently "remembered" by the application we will
 		// queue a permanent cookie that contains the encrypted copy of the user
 		// identifier. We will then decrypt this later to retrieve the users.
-		if ($remember)
-		{
+		if ($remember) {
 			$this->createRememberTokenIfDoesntExist($user);
 
 			$this->queueRecallerCookie($user);
@@ -434,8 +428,7 @@ class Guard {
 		// If we have an event dispatcher instance set we will fire an event so that
 		// any listeners will hook into the authentication events and run actions
 		// based on the login and logout events fired from the guard instances.
-		if (isset($this->events))
-		{
+		if (isset($this->events)) {
 			$this->events->fire('auth.login', array($user, $remember));
 		}
 
@@ -445,7 +438,7 @@ class Guard {
 	/**
 	 * Update the session with the given ID.
 	 *
-	 * @param  string  $id
+	 * @param  string $id
 	 * @return void
 	 */
 	protected function updateSession($id)
@@ -458,8 +451,8 @@ class Guard {
 	/**
 	 * Log the given user ID into the application.
 	 *
-	 * @param  mixed  $id
-	 * @param  bool   $remember
+	 * @param  mixed $id
+	 * @param  bool $remember
 	 * @return \Illuminate\Auth\UserInterface
 	 */
 	public function loginUsingId($id, $remember = false)
@@ -474,7 +467,7 @@ class Guard {
 	/**
 	 * Log the given user ID into the application without sessions or cookies.
 	 *
-	 * @param  mixed  $id
+	 * @param  mixed $id
 	 * @return bool
 	 */
 	public function onceUsingId($id)
@@ -487,12 +480,12 @@ class Guard {
 	/**
 	 * Queue the recaller cookie into the cookie jar.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  \Illuminate\Auth\UserInterface $user
 	 * @return void
 	 */
 	protected function queueRecallerCookie(UserInterface $user)
 	{
-		$value = $user->getAuthIdentifier().'|'.$user->getRememberToken();
+		$value = $user->getAuthIdentifier() . '|' . $user->getRememberToken();
 
 		$this->getCookieJar()->queue($this->createRecaller($value));
 	}
@@ -500,7 +493,7 @@ class Guard {
 	/**
 	 * Create a remember me cookie for a given ID.
 	 *
-	 * @param  string  $value
+	 * @param  string $value
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
 	protected function createRecaller($value)
@@ -522,13 +515,11 @@ class Guard {
 		// listening for anytime a user signs out of this application manually.
 		$this->clearUserDataFromStorage();
 
-		if ( ! is_null($this->user))
-		{
+		if (!is_null($this->user)) {
 			$this->refreshRememberToken($user);
 		}
 
-		if (isset($this->events))
-		{
+		if (isset($this->events)) {
 			$this->events->fire('auth.logout', array($user));
 		}
 
@@ -557,7 +548,7 @@ class Guard {
 	/**
 	 * Refresh the remember token for the user.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  \Illuminate\Auth\UserInterface $user
 	 * @return void
 	 */
 	protected function refreshRememberToken(UserInterface $user)
@@ -570,15 +561,14 @@ class Guard {
 	/**
 	 * Create a new remember token for the user if one doesn't already exist.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  \Illuminate\Auth\UserInterface $user
 	 * @return void
 	 */
 	protected function createRememberTokenIfDoesntExist(UserInterface $user)
 	{
 		$rememberToken = $user->getRememberToken();
 
-		if (empty($rememberToken))
-		{
+		if (empty($rememberToken)) {
 			$this->refreshRememberToken($user);
 		}
 	}
@@ -592,8 +582,7 @@ class Guard {
 	 */
 	public function getCookieJar()
 	{
-		if ( ! isset($this->cookie))
-		{
+		if (!isset($this->cookie)) {
 			throw new \RuntimeException("Cookie jar has not been set.");
 		}
 
@@ -603,7 +592,7 @@ class Guard {
 	/**
 	 * Set the cookie creator instance used by the guard.
 	 *
-	 * @param  \Illuminate\Cookie\CookieJar  $cookie
+	 * @param  \Illuminate\Cookie\CookieJar $cookie
 	 * @return void
 	 */
 	public function setCookieJar(CookieJar $cookie)
@@ -655,7 +644,7 @@ class Guard {
 	/**
 	 * Set the user provider used by the guard.
 	 *
-	 * @param  \Illuminate\Auth\UserProviderInterface  $provider
+	 * @param  \Illuminate\Auth\UserProviderInterface $provider
 	 * @return void
 	 */
 	public function setProvider(UserProviderInterface $provider)
@@ -676,7 +665,7 @@ class Guard {
 	/**
 	 * Set the current user of the application.
 	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  \Illuminate\Auth\UserInterface $user
 	 * @return void
 	 */
 	public function setUser(UserInterface $user)
@@ -726,7 +715,7 @@ class Guard {
 	 */
 	public function getName()
 	{
-		return 'login_'.md5(get_class($this));
+		return 'login_' . md5(get_class($this));
 	}
 
 	/**
@@ -736,7 +725,7 @@ class Guard {
 	 */
 	public function getRecallerName()
 	{
-		return 'remember_'.md5(get_class($this));
+		return 'remember_' . md5(get_class($this));
 	}
 
 	/**

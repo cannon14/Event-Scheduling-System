@@ -3,14 +3,15 @@
 use Symfony\Component\Finder\Finder;
 use Illuminate\Filesystem\Filesystem;
 
-class Starter {
+class Starter
+{
 
 	/**
 	 * Load the workbench vendor auto-load files.
 	 *
-	 * @param  string  $path
-	 * @param  \Symfony\Component\Finder\Finder  $finder
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
+	 * @param  string $path
+	 * @param  \Symfony\Component\Finder\Finder $finder
+	 * @param  \Illuminate\Filesystem\Filesystem $files
 	 * @return void
 	 */
 	public static function start($path, Finder $finder = null, Filesystem $files = null)
@@ -24,8 +25,7 @@ class Starter {
 
 		$autoloads = $finder->in($path)->files()->name('autoload.php')->depth('<= 3')->followLinks();
 
-		foreach ($autoloads as $file)
-		{
+		foreach ($autoloads as $file) {
 			$files->requireOnce($file->getRealPath());
 		}
 	}

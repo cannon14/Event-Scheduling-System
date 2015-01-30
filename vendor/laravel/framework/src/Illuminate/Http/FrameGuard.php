@@ -3,7 +3,8 @@
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class FrameGuard implements HttpKernelInterface {
+class FrameGuard implements HttpKernelInterface
+{
 
 	/**
 	 * The wrapped kernel implementation.
@@ -15,7 +16,7 @@ class FrameGuard implements HttpKernelInterface {
 	/**
 	 * Create a new FrameGuard instance.
 	 *
-	 * @param  \Symfony\Component\HttpKernel\HttpKernelInterface  $app
+	 * @param  \Symfony\Component\HttpKernel\HttpKernelInterface $app
 	 * @return void
 	 */
 	public function __construct(HttpKernelInterface $app)
@@ -28,9 +29,9 @@ class FrameGuard implements HttpKernelInterface {
 	 *
 	 * @implements HttpKernelInterface::handle
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
-	 * @param  int   $type
-	 * @param  bool  $catch
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
+	 * @param  int $type
+	 * @param  bool $catch
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)

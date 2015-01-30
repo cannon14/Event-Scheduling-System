@@ -1,3 +1,5 @@
 <?php namespace Way\Generators;
 
-class InvalidMigrationName extends \Exception {}
+class InvalidMigrationName extends \Exception
+{
+}

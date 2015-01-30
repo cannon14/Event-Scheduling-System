@@ -14,7 +14,7 @@ The simplest case: focusing the input (clicking or tabbing into it) will show th
     <input type="text" value="02-16-2012">
 
 .. figure:: _static/screenshots/markup_input.png
-    :align: center
+:align: center
 
 component
 ---------
@@ -29,7 +29,7 @@ Adding the ``date`` class to an ``input-append`` or ``input-prepend`` bootstrap 
     </div>
 
 .. figure:: _static/screenshots/markup_component.png
-    :align: center
+:align: center
 
 date-range
 ----------
@@ -45,7 +45,7 @@ Using the ``input-daterange`` construct with multiple child inputs will instanti
     </div>
 
 .. figure:: _static/screenshots/markup_daterange.png
-    :align: center
+:align: center
 
 inline or embedded
 ------------------
@@ -57,4 +57,4 @@ Instantiating the datepicker on a simple div will give an embedded picker that i
     <div data-date="12/03/2012"></div>
 
 .. figure:: _static/screenshots/markup_inline.png
-    :align: center
+:align: center

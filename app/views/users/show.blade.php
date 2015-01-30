@@ -2,6 +2,6 @@
 
 @section('content')
 
-    <h2>User Name</h2>
+	<h2>User Name</h2>
 
 @stop

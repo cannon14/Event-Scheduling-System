@@ -6,20 +6,20 @@ use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
 
-class SqlServerConnection extends Connection {
+class SqlServerConnection extends Connection
+{
 
 	/**
 	 * Execute a Closure within a transaction.
 	 *
-	 * @param  \Closure  $callback
+	 * @param  \Closure $callback
 	 * @return mixed
 	 *
 	 * @throws \Exception
 	 */
 	public function transaction(Closure $callback)
 	{
-		if ($this->getDriverName() == 'sqlsrv')
-		{
+		if ($this->getDriverName() == 'sqlsrv') {
 			return parent::transaction($callback);
 		}
 
@@ -28,18 +28,16 @@ class SqlServerConnection extends Connection {
 		// We'll simply execute the given callback within a try / catch block
 		// and if we catch any exception we can rollback the transaction
 		// so that none of the changes are persisted to the database.
-		try
-		{
+		try {
 			$result = $callback($this);
 
 			$this->pdo->exec('COMMIT TRAN');
 		}
 
-		// If we catch an exception, we will roll back so nothing gets messed
-		// up in the database. Then we'll re-throw the exception so it can
-		// be handled how the developer sees fit for their applications.
-		catch (\Exception $e)
-		{
+			// If we catch an exception, we will roll back so nothing gets messed
+			// up in the database. Then we'll re-throw the exception so it can
+			// be handled how the developer sees fit for their applications.
+		catch (\Exception $e) {
 			$this->pdo->exec('ROLLBACK TRAN');
 
 			throw $e;

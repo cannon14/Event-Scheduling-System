@@ -17,11 +17,11 @@ namespace Predis\Command;
  */
 class ZSetLexCount extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'ZLEXCOUNT';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'ZLEXCOUNT';
+	}
 }

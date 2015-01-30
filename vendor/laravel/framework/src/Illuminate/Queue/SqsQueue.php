@@ -3,7 +3,8 @@
 use Aws\Sqs\SqsClient;
 use Illuminate\Queue\Jobs\SqsJob;
 
-class SqsQueue extends Queue implements QueueInterface {
+class SqsQueue extends Queue implements QueueInterface
+{
 
 	/**
 	 * The Amazon SQS instance.
@@ -22,8 +23,8 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Create a new Amazon SQS queue instance.
 	 *
-	 * @param  \Aws\Sqs\SqsClient  $sqs
-	 * @param  string  $default
+	 * @param  \Aws\Sqs\SqsClient $sqs
+	 * @param  string $default
 	 * @return void
 	 */
 	public function __construct(SqsClient $sqs, $default)
@@ -35,9 +36,9 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Push a new job onto the queue.
 	 *
-	 * @param  string  $job
-	 * @param  mixed   $data
-	 * @param  string  $queue
+	 * @param  string $job
+	 * @param  mixed $data
+	 * @param  string $queue
 	 * @return mixed
 	 */
 	public function push($job, $data = '', $queue = null)
@@ -48,9 +49,9 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Push a raw payload onto the queue.
 	 *
-	 * @param  string  $payload
-	 * @param  string  $queue
-	 * @param  array   $options
+	 * @param  string $payload
+	 * @param  string $queue
+	 * @param  array $options
 	 * @return mixed
 	 */
 	public function pushRaw($payload, $queue = null, array $options = array())
@@ -63,10 +64,10 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Push a new job onto the queue after a delay.
 	 *
-	 * @param  \DateTime|int  $delay
-	 * @param  string  $job
-	 * @param  mixed   $data
-	 * @param  string  $queue
+	 * @param  \DateTime|int $delay
+	 * @param  string $job
+	 * @param  mixed $data
+	 * @param  string $queue
 	 * @return mixed
 	 */
 	public function later($delay, $job, $data = '', $queue = null)
@@ -85,19 +86,16 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Pop the next job off of the queue.
 	 *
-	 * @param  string  $queue
+	 * @param  string $queue
 	 * @return \Illuminate\Queue\Jobs\Job|null
 	 */
 	public function pop($queue = null)
 	{
 		$queue = $this->getQueue($queue);
 
-		$response = $this->sqs->receiveMessage(
-			array('QueueUrl' => $queue, 'AttributeNames' => array('ApproximateReceiveCount'))
-		);
+		$response = $this->sqs->receiveMessage(array('QueueUrl' => $queue, 'AttributeNames' => array('ApproximateReceiveCount')));
 
-		if (count($response['Messages']) > 0)
-		{
+		if (count($response['Messages']) > 0) {
 			return new SqsJob($this->container, $this->sqs, $queue, $response['Messages'][0]);
 		}
 	}
@@ -105,7 +103,7 @@ class SqsQueue extends Queue implements QueueInterface {
 	/**
 	 * Get the queue or return the default.
 	 *
-	 * @param  string|null  $queue
+	 * @param  string|null $queue
 	 * @return string
 	 */
 	public function getQueue($queue)

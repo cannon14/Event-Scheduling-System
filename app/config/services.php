@@ -14,18 +14,10 @@ return array(
 	|
 	*/
 
-	'mailgun' => array(
-		'domain' => '',
-		'secret' => '',
-	),
+	'mailgun' => array('domain' => '', 'secret' => '',),
 
-	'mandrill' => array(
-		'secret' => '',
-	),
+	'mandrill' => array('secret' => '',),
 
-	'stripe' => array(
-		'model'  => 'User',
-		'secret' => '',
-	),
+	'stripe' => array('model' => 'User', 'secret' => '',),
 
 );

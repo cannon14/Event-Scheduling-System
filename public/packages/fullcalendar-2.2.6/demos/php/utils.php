@@ -10,7 +10,8 @@
 date_default_timezone_set('UTC');
 
 
-class Event {
+class Event
+{
 
 	// Tests whether the given ISO8601 string has a time-of-day or not
 	const ALL_DAY_REGEX = '/^\d{4}-\d\d-\d\d$/'; // matches strings like "2013-12-29"
@@ -24,18 +25,17 @@ class Event {
 
 	// Constructs an Event object from the given array of key=>values.
 	// You can optionally force the timezone of the parsed dates.
-	public function __construct($array, $timezone=null) {
+	public function __construct($array, $timezone = null)
+	{
 
 		$this->title = $array['title'];
 
 		if (isset($array['allDay'])) {
 			// allDay has been explicitly specified
 			$this->allDay = (bool)$array['allDay'];
-		}
-		else {
+		} else {
 			// Guess allDay based off of ISO8601 date strings
-			$this->allDay = preg_match(self::ALL_DAY_REGEX, $array['start']) &&
-				(!isset($array['end']) || preg_match(self::ALL_DAY_REGEX, $array['end']));
+			$this->allDay = preg_match(self::ALL_DAY_REGEX, $array['start']) && (!isset($array['end']) || preg_match(self::ALL_DAY_REGEX, $array['end']));
 		}
 
 		if ($this->allDay) {
@@ -58,7 +58,8 @@ class Event {
 
 	// Returns whether the date range of our event intersects with the given all-day range.
 	// $rangeStart and $rangeEnd are assumed to be dates in UTC with 00:00:00 time.
-	public function isWithinDayRange($rangeStart, $rangeEnd) {
+	public function isWithinDayRange($rangeStart, $rangeEnd)
+	{
 
 		// Normalize our event's dates for comparison with the all-day range.
 		$eventStart = stripTime($this->start);
@@ -67,8 +68,7 @@ class Event {
 		if (!$eventEnd) {
 			// No end time? Only check if the start is within range.
 			return $eventStart < $rangeEnd && $eventStart >= $rangeStart;
-		}
-		else {
+		} else {
 			// Check if the two ranges intersect.
 			return $eventStart < $rangeEnd && $eventEnd > $rangeStart;
 		}
@@ -76,7 +76,8 @@ class Event {
 
 
 	// Converts this Event object back to a plain data array, to be used for generating JSON
-	public function toArray() {
+	public function toArray()
+	{
 
 		// Start with the misc properties (don't worry, PHP won't affect the original array)
 		$array = $this->properties;
@@ -86,8 +87,7 @@ class Event {
 		// Figure out the date format. This essentially encodes allDay into the date string.
 		if ($this->allDay) {
 			$format = 'Y-m-d'; // output like "2013-12-29"
-		}
-		else {
+		} else {
 			$format = 'c'; // full ISO8601 output, like "2013-12-29T09:00:00+08:00"
 		}
 
@@ -108,12 +108,11 @@ class Event {
 
 
 // Parses a string into a DateTime object, optionally forced into the given timezone.
-function parseDateTime($string, $timezone=null) {
-	$date = new DateTime(
-		$string,
-		$timezone ? $timezone : new DateTimeZone('UTC')
-			// Used only when the string is ambiguous.
-			// Ignored if string has a timezone offset in it.
+function parseDateTime($string, $timezone = null)
+{
+	$date = new DateTime($string, $timezone ? $timezone : new DateTimeZone('UTC')
+	// Used only when the string is ambiguous.
+	// Ignored if string has a timezone offset in it.
 	);
 	if ($timezone) {
 		// If our timezone was ignored above, force it.
@@ -125,6 +124,7 @@ function parseDateTime($string, $timezone=null) {
 
 // Takes the year/month/date values of the given DateTime and converts them to a new DateTime,
 // but in UTC.
-function stripTime($datetime) {
+function stripTime($datetime)
+{
 	return new DateTime($datetime->format('Y-m-d'));
 }

@@ -3,7 +3,8 @@
 use Closure;
 use Illuminate\Support\Manager;
 
-class CacheManager extends Manager {
+class CacheManager extends Manager
+{
 
 	/**
 	 * Create an instance of the APC cache driver.
@@ -139,7 +140,7 @@ class CacheManager extends Manager {
 	/**
 	 * Set the cache "prefix" value.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function setPrefix($name)
@@ -150,7 +151,7 @@ class CacheManager extends Manager {
 	/**
 	 * Create a new cache repository with the given implementation.
 	 *
-	 * @param  \Illuminate\Cache\StoreInterface  $store
+	 * @param  \Illuminate\Cache\StoreInterface $store
 	 * @return \Illuminate\Cache\Repository
 	 */
 	protected function repository(StoreInterface $store)
@@ -171,7 +172,7 @@ class CacheManager extends Manager {
 	/**
 	 * Set the default cache driver name.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function setDefaultDriver($name)

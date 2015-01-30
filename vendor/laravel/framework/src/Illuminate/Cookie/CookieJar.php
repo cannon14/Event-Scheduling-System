@@ -2,7 +2,8 @@
 
 use Symfony\Component\HttpFoundation\Cookie;
 
-class CookieJar {
+class CookieJar
+{
 
 	/**
 	 * The default path (if specified).
@@ -28,13 +29,13 @@ class CookieJar {
 	/**
 	 * Create a new cookie instance.
 	 *
-	 * @param  string  $name
-	 * @param  string  $value
-	 * @param  int     $minutes
-	 * @param  string  $path
-	 * @param  string  $domain
-	 * @param  bool    $secure
-	 * @param  bool    $httpOnly
+	 * @param  string $name
+	 * @param  string $value
+	 * @param  int $minutes
+	 * @param  string $path
+	 * @param  string $domain
+	 * @param  bool $secure
+	 * @param  bool $httpOnly
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
 	public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true)
@@ -49,12 +50,12 @@ class CookieJar {
 	/**
 	 * Create a cookie that lasts "forever" (five years).
 	 *
-	 * @param  string  $name
-	 * @param  string  $value
-	 * @param  string  $path
-	 * @param  string  $domain
-	 * @param  bool    $secure
-	 * @param  bool    $httpOnly
+	 * @param  string $name
+	 * @param  string $value
+	 * @param  string $path
+	 * @param  string $domain
+	 * @param  bool $secure
+	 * @param  bool $httpOnly
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
 	public function forever($name, $value, $path = null, $domain = null, $secure = false, $httpOnly = true)
@@ -65,9 +66,9 @@ class CookieJar {
 	/**
 	 * Expire the given cookie.
 	 *
-	 * @param  string  $name
-	 * @param  string  $path
-	 * @param  string  $domain
+	 * @param  string $name
+	 * @param  string $path
+	 * @param  string $domain
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
 	public function forget($name, $path = null, $domain = null)
@@ -78,19 +79,19 @@ class CookieJar {
 	/**
 	 * Determine if a cookie has been queued.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return bool
 	 */
 	public function hasQueued($key)
 	{
-		return ! is_null($this->queued($key));
+		return !is_null($this->queued($key));
 	}
 
 	/**
 	 * Get a queued cookie instance.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
+	 * @param  string $key
+	 * @param  mixed $default
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
 	public function queued($key, $default = null)
@@ -106,12 +107,9 @@ class CookieJar {
 	 */
 	public function queue()
 	{
-		if (head(func_get_args()) instanceof Cookie)
-		{
+		if (head(func_get_args()) instanceof Cookie) {
 			$cookie = head(func_get_args());
-		}
-		else
-		{
+		} else {
 			$cookie = call_user_func_array(array($this, 'make'), func_get_args());
 		}
 
@@ -121,7 +119,7 @@ class CookieJar {
 	/**
 	 * Remove a cookie from the queue.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 */
 	public function unqueue($name)
 	{
@@ -131,8 +129,8 @@ class CookieJar {
 	/**
 	 * Get the path and domain, or the default values.
 	 *
-	 * @param  string  $path
-	 * @param  string  $domain
+	 * @param  string $path
+	 * @param  string $domain
 	 * @return array
 	 */
 	protected function getPathAndDomain($path, $domain)
@@ -143,8 +141,8 @@ class CookieJar {
 	/**
 	 * Set the default path and domain for the jar.
 	 *
-	 * @param  string  $path
-	 * @param  string  $domain
+	 * @param  string $path
+	 * @param  string $domain
 	 * @return $this
 	 */
 	public function setDefaultPathAndDomain($path, $domain)

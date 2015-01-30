@@ -1,3 +1,5 @@
 <?php namespace Illuminate\Encryption;
 
-class DecryptException extends \RuntimeException {}
+class DecryptException extends \RuntimeException
+{
+}

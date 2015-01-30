@@ -1,12 +1,13 @@
 <?php namespace Illuminate\Routing;
 
-interface RouteFiltererInterface {
+interface RouteFiltererInterface
+{
 
 	/**
 	 * Register a new filter with the router.
 	 *
-	 * @param  string  $name
-	 * @param  mixed  $callback
+	 * @param  string $name
+	 * @param  mixed $callback
 	 * @return void
 	 */
 	public function filter($name, $callback);
@@ -14,10 +15,10 @@ interface RouteFiltererInterface {
 	/**
 	 * Call the given route filter.
 	 *
-	 * @param  string  $filter
-	 * @param  array  $parameters
-	 * @param  \Illuminate\Routing\Route  $route
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  string $filter
+	 * @param  array $parameters
+	 * @param  \Illuminate\Routing\Route $route
+	 * @param  \Illuminate\Http\Request $request
 	 * @param  \Illuminate\Http\Response|null $response
 	 * @return mixed
 	 */

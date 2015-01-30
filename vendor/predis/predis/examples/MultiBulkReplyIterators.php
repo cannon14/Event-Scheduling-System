@@ -30,7 +30,7 @@ $client->hmset('metavars', array('foo' => 'bar', 'hoge' => 'piyo', 'lol' => 'wut
 
 // By default multibulk iterators iterate over the reply as a list of items...
 foreach ($client->hgetall('metavars') as $index => $item) {
-    echo "[$index] $item\n";
+	echo "[$index] $item\n";
 }
 
 /* OUTPUT:
@@ -44,9 +44,9 @@ foreach ($client->hgetall('metavars') as $index => $item) {
 
 // ... but certain multibulk replies are better represented as lists of tuples.
 foreach ($client->hgetall('metavars')->asTuple() as $index => $kv) {
-    list($key, $value) = $kv;
+	list($key, $value) = $kv;
 
-    echo "[$index] $key => $value\n";
+	echo "[$index] $key => $value\n";
 }
 
 /* OUTPUT:

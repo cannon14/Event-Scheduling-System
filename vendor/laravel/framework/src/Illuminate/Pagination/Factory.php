@@ -4,7 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\View\Factory as ViewFactory;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class Factory {
+class Factory
+{
 
 	/**
 	 * The request instance.
@@ -65,10 +66,10 @@ class Factory {
 	/**
 	 * Create a new pagination factory.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
-	 * @param  \Illuminate\View\Factory  $view
-	 * @param  \Symfony\Component\Translation\TranslatorInterface  $trans
-	 * @param  string  $pageName
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
+	 * @param  \Illuminate\View\Factory $view
+	 * @param  \Symfony\Component\Translation\TranslatorInterface $trans
+	 * @param  string $pageName
 	 * @return void
 	 */
 	public function __construct(Request $request, ViewFactory $view, TranslatorInterface $trans, $pageName = 'page')
@@ -87,15 +88,15 @@ class Factory {
 	 */
 	protected function setupPaginationEnvironment()
 	{
-		$this->view->addNamespace('pagination', __DIR__.'/views');
+		$this->view->addNamespace('pagination', __DIR__ . '/views');
 	}
 
 	/**
 	 * Get a new paginator instance.
 	 *
-	 * @param  array  $items
-	 * @param  int    $total
-	 * @param  int|null  $perPage
+	 * @param  array $items
+	 * @param  int $total
+	 * @param  int|null $perPage
 	 * @return \Illuminate\Pagination\Paginator
 	 */
 	public function make(array $items, $total, $perPage = null)
@@ -108,8 +109,8 @@ class Factory {
 	/**
 	 * Get the pagination view.
 	 *
-	 * @param  \Illuminate\Pagination\Paginator  $paginator
-	 * @param  string  $view
+	 * @param  \Illuminate\Pagination\Paginator $paginator
+	 * @param  string $view
 	 * @return \Illuminate\View\View
 	 */
 	public function getPaginationView(Paginator $paginator, $view = null)
@@ -126,10 +127,9 @@ class Factory {
 	 */
 	public function getCurrentPage()
 	{
-		$page = (int) $this->currentPage ?: $this->request->input($this->pageName, 1);
+		$page = (int)$this->currentPage ?: $this->request->input($this->pageName, 1);
 
-		if ($page < 1 || filter_var($page, FILTER_VALIDATE_INT) === false)
-		{
+		if ($page < 1 || filter_var($page, FILTER_VALIDATE_INT) === false) {
 			return 1;
 		}
 
@@ -139,7 +139,7 @@ class Factory {
 	/**
 	 * Set the number of the current page.
 	 *
-	 * @param  int  $number
+	 * @param  int $number
 	 * @return void
 	 */
 	public function setCurrentPage($number)
@@ -160,7 +160,7 @@ class Factory {
 	/**
 	 * Set the base URL in use by the paginator.
 	 *
-	 * @param  string  $baseUrl
+	 * @param  string $baseUrl
 	 * @return void
 	 */
 	public function setBaseUrl($baseUrl)
@@ -171,7 +171,7 @@ class Factory {
 	/**
 	 * Set the input page parameter name used by the paginator.
 	 *
-	 * @param  string  $pageName
+	 * @param  string $pageName
 	 * @return void
 	 */
 	public function setPageName($pageName)
@@ -192,12 +192,13 @@ class Factory {
 	/**
 	 * Get the name of the pagination view.
 	 *
-	 * @param  string  $view
+	 * @param  string $view
 	 * @return string
 	 */
 	public function getViewName($view = null)
 	{
-		if ( ! is_null($view)) return $view;
+		if (!is_null($view))
+			return $view;
 
 		return $this->viewName ?: 'pagination::slider';
 	}
@@ -205,7 +206,7 @@ class Factory {
 	/**
 	 * Set the name of the pagination view.
 	 *
-	 * @param  string  $viewName
+	 * @param  string $viewName
 	 * @return void
 	 */
 	public function setViewName($viewName)
@@ -226,7 +227,7 @@ class Factory {
 	/**
 	 * Set the locale of the paginator.
 	 *
-	 * @param  string  $locale
+	 * @param  string $locale
 	 * @return void
 	 */
 	public function setLocale($locale)
@@ -247,7 +248,7 @@ class Factory {
 	/**
 	 * Set the active request instance.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
 	 * @return void
 	 */
 	public function setRequest(Request $request)
@@ -268,7 +269,7 @@ class Factory {
 	/**
 	 * Set the current view factory.
 	 *
-	 * @param  \Illuminate\View\Factory  $view
+	 * @param  \Illuminate\View\Factory $view
 	 * @return void
 	 */
 	public function setViewFactory(ViewFactory $view)

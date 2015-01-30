@@ -30,78 +30,72 @@ use Zend\EventManager\EventInterface;
  */
 class Module
 {
-    protected $run;
+	protected $run;
 
-    public function onBootstrap(EventInterface $event)
-    {
-        $prettyPageHandler = new PrettyPageHandler();
+	public function onBootstrap(EventInterface $event)
+	{
+		$prettyPageHandler = new PrettyPageHandler();
 
-        // Set editor
-        $config = $event->getApplication()->getServiceManager()->get('Config');
-        if (isset($config['view_manager']['editor'])) {
-            $prettyPageHandler->setEditor($config['view_manager']['editor']);
-        }
+		// Set editor
+		$config = $event->getApplication()->getServiceManager()->get('Config');
+		if (isset($config['view_manager']['editor'])) {
+			$prettyPageHandler->setEditor($config['view_manager']['editor']);
+		}
 
-        $this->run = new Run();
-        $this->run->register();
-        $this->run->pushHandler($prettyPageHandler);
+		$this->run = new Run();
+		$this->run->register();
+		$this->run->pushHandler($prettyPageHandler);
 
-        $this->attachListeners($event);
-    }
+		$this->attachListeners($event);
+	}
 
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
+	public function getAutoloaderConfig()
+	{
+		return array('Zend\Loader\StandardAutoloader' => array('namespaces' => array(__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,),),);
+	}
 
-    private function attachListeners(EventInterface $event)
-    {
-        $request = $event->getRequest();
-        $application = $event->getApplication();
-        $services = $application->getServiceManager();
-        $events = $application->getEventManager();
-        $config = $services->get('Config');
+	private function attachListeners(EventInterface $event)
+	{
+		$request = $event->getRequest();
+		$application = $event->getApplication();
+		$services = $application->getServiceManager();
+		$events = $application->getEventManager();
+		$config = $services->get('Config');
 
-        //Display exceptions based on configuration and console mode
-        if ($request instanceof ConsoleRequest || empty($config['view_manager']['display_exceptions'])) {
-            return;
-        }
+		//Display exceptions based on configuration and console mode
+		if ($request instanceof ConsoleRequest || empty($config['view_manager']['display_exceptions'])) {
+			return;
+		}
 
-        $jsonHandler = new JsonResponseHandler();
+		$jsonHandler = new JsonResponseHandler();
 
-        if (!empty($config['view_manager']['json_exceptions']['show_trace'])) {
-            //Add trace to the JSON output
-            $jsonHandler->addTraceToOutput(true);
-        }
+		if (!empty($config['view_manager']['json_exceptions']['show_trace'])) {
+			//Add trace to the JSON output
+			$jsonHandler->addTraceToOutput(true);
+		}
 
-        if (!empty($config['view_manager']['json_exceptions']['ajax_only'])) {
-            //Only return JSON response for AJAX requests
-            $jsonHandler->onlyForAjaxRequests(true);
-        }
+		if (!empty($config['view_manager']['json_exceptions']['ajax_only'])) {
+			//Only return JSON response for AJAX requests
+			$jsonHandler->onlyForAjaxRequests(true);
+		}
 
-        if (!empty($config['view_manager']['json_exceptions']['display'])) {
-            //Turn on JSON handler
-            $this->run->pushHandler($jsonHandler);
-        }
+		if (!empty($config['view_manager']['json_exceptions']['display'])) {
+			//Turn on JSON handler
+			$this->run->pushHandler($jsonHandler);
+		}
 
-        //Attach the Whoops ExceptionStrategy
-        $exceptionStrategy = new ExceptionStrategy($this->run);
-        $exceptionStrategy->attach($events);
+		//Attach the Whoops ExceptionStrategy
+		$exceptionStrategy = new ExceptionStrategy($this->run);
+		$exceptionStrategy->attach($events);
 
-        //Attach the Whoops RouteNotFoundStrategy
-        $routeNotFoundStrategy = new RouteNotFoundStrategy($this->run);
-        $routeNotFoundStrategy->attach($events);
+		//Attach the Whoops RouteNotFoundStrategy
+		$routeNotFoundStrategy = new RouteNotFoundStrategy($this->run);
+		$routeNotFoundStrategy->attach($events);
 
-        //Detach default ExceptionStrategy
-        $services->get('Zend\Mvc\View\Http\ExceptionStrategy')->detach($events);
+		//Detach default ExceptionStrategy
+		$services->get('Zend\Mvc\View\Http\ExceptionStrategy')->detach($events);
 
-        //Detach default RouteNotFoundStrategy
-        $services->get('Zend\Mvc\View\Http\RouteNotFoundStrategy')->detach($events);
-    }
+		//Detach default RouteNotFoundStrategy
+		$services->get('Zend\Mvc\View\Http\RouteNotFoundStrategy')->detach($events);
+	}
 }

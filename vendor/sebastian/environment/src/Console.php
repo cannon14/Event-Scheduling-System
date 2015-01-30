@@ -52,61 +52,61 @@ namespace SebastianBergmann\Environment;
  */
 class Console
 {
-    /**
-     * Returns true if STDOUT supports colorization.
-     *
-     * This code has been copied and adapted from
-     * Symfony\Component\Console\Output\OutputStream.
-     *
-     * @return boolean
-     */
-    public function hasColorSupport()
-    {
-        if (DIRECTORY_SEPARATOR == '\\') {
-            return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI');
-        }
+	/**
+	 * Returns true if STDOUT supports colorization.
+	 *
+	 * This code has been copied and adapted from
+	 * Symfony\Component\Console\Output\OutputStream.
+	 *
+	 * @return boolean
+	 */
+	public function hasColorSupport()
+	{
+		if (DIRECTORY_SEPARATOR == '\\') {
+			return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI');
+		}
 
-        if (!defined('STDOUT')) {
-            return false;
-        }
+		if (!defined('STDOUT')) {
+			return false;
+		}
 
-        return $this->isTty(STDOUT);
-    }
+		return $this->isTty(STDOUT);
+	}
 
-    /**
-     * Returns the number of columns of the terminal.
-     *
-     * @return integer
-     */
-    public function getNumberOfColumns()
-    {
-        // Windows terminals have a fixed size of 80
-        // but one column is used for the cursor.
-        if (DIRECTORY_SEPARATOR == '\\') {
-            return 79;
-        }
+	/**
+	 * Returns the number of columns of the terminal.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfColumns()
+	{
+		// Windows terminals have a fixed size of 80
+		// but one column is used for the cursor.
+		if (DIRECTORY_SEPARATOR == '\\') {
+			return 79;
+		}
 
-        if (!defined('STDIN') || !$this->isTty(STDIN)) {
-            return 80;
-        }
+		if (!defined('STDIN') || !$this->isTty(STDIN)) {
+			return 80;
+		}
 
-        if (preg_match('#\d+ (\d+)#', shell_exec('stty size'), $match) === 1) {
-            return (int) $match[1];
-        }
+		if (preg_match('#\d+ (\d+)#', shell_exec('stty size'), $match) === 1) {
+			return (int)$match[1];
+		}
 
-        if (preg_match('#columns = (\d+);#', shell_exec('stty'), $match) === 1) {
-            return (int) $match[1];
-        }
+		if (preg_match('#columns = (\d+);#', shell_exec('stty'), $match) === 1) {
+			return (int)$match[1];
+		}
 
-        return 80;
-    }
+		return 80;
+	}
 
-    /**
-     * @param  resource $fd
-     * @return boolean
-     */
-    private function isTty($fd)
-    {
-        return function_exists('posix_isatty') && @posix_isatty($fd);
-    }
+	/**
+	 * @param  resource $fd
+	 * @return boolean
+	 */
+	private function isTty($fd)
+	{
+		return function_exists('posix_isatty') && @posix_isatty($fd);
+	}
 }

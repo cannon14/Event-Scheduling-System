@@ -18,72 +18,72 @@ namespace Predis\Command;
  */
 class HyperLogLogAddTest extends PredisCommandTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExpectedCommand()
-    {
-        return 'Predis\Command\HyperLogLogAdd';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getExpectedCommand()
+	{
+		return 'Predis\Command\HyperLogLogAdd';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExpectedId()
-    {
-        return 'PFADD';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getExpectedId()
+	{
+		return 'PFADD';
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testFilterArguments()
-    {
-        $arguments = array('key', 'a', 'b', 'c');
-        $expected = array('key', 'a', 'b', 'c');
+	/**
+	 * @group disconnected
+	 */
+	public function testFilterArguments()
+	{
+		$arguments = array('key', 'a', 'b', 'c');
+		$expected = array('key', 'a', 'b', 'c');
 
-        $command = $this->getCommand();
-        $command->setArguments($arguments);
+		$command = $this->getCommand();
+		$command->setArguments($arguments);
 
-        $this->assertSame($expected, $command->getArguments());
-    }
+		$this->assertSame($expected, $command->getArguments());
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testFilterArgumentsFieldsAsSingleArray()
-    {
-        $arguments = array('key', array('a', 'b', 'c'));
-        $expected = array('key', 'a', 'b', 'c');
+	/**
+	 * @group disconnected
+	 */
+	public function testFilterArgumentsFieldsAsSingleArray()
+	{
+		$arguments = array('key', array('a', 'b', 'c'));
+		$expected = array('key', 'a', 'b', 'c');
 
-        $command = $this->getCommand();
-        $command->setArguments($arguments);
+		$command = $this->getCommand();
+		$command->setArguments($arguments);
 
-        $this->assertSame($expected, $command->getArguments());
-    }
+		$this->assertSame($expected, $command->getArguments());
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testParseResponse()
-    {
-        $command = $this->getCommand();
+	/**
+	 * @group disconnected
+	 */
+	public function testParseResponse()
+	{
+		$command = $this->getCommand();
 
-        $this->assertSame(false, $command->parseResponse(0));
-        $this->assertSame(true, $command->parseResponse(1));
-    }
+		$this->assertSame(false, $command->parseResponse(0));
+		$this->assertSame(true, $command->parseResponse(1));
+	}
 
-    /**
-     * @group connected
-     * @requiresRedisVersion >= 2.8.9
-     * @expectedException Predis\ServerException
-     * @expectedExceptionMessage Operation against a key holding the wrong kind of value
-     */
-    public function testThrowsExceptionOnWrongType()
-    {
-        $redis = $this->getClient();
+	/**
+	 * @group connected
+	 * @requiresRedisVersion >= 2.8.9
+	 * @expectedException Predis\ServerException
+	 * @expectedExceptionMessage Operation against a key holding the wrong kind of value
+	 */
+	public function testThrowsExceptionOnWrongType()
+	{
+		$redis = $this->getClient();
 
-        $redis->lpush('metavars', 'foo', 'hoge');
-        $redis->pfadd('metavars', 'foofoo');
-    }
+		$redis->lpush('metavars', 'foo', 'hoge');
+		$redis->pfadd('metavars', 'foofoo');
+	}
 }

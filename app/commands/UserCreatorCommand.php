@@ -3,7 +3,8 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class UserCreatorCommand extends Command {
+class UserCreatorCommand extends Command
+{
 
 	/**
 	 * The console command name.
@@ -24,7 +25,8 @@ class UserCreatorCommand extends Command {
 	 *
 	 * @return \UserCreatorCommand
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 	}
 
@@ -33,15 +35,16 @@ class UserCreatorCommand extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire() {
+	public function fire()
+	{
 		$email = $this->argument('email');
 		$password = $this->argument('password');
-        $acl_id = $this->argument('acl_id');
+		$acl_id = $this->argument('acl_id');
 
 		$user = new User();
 		$user->email = $email;
 		$user->password = Hash::make($password);
-        $user->acl_id = $acl_id;
+		$user->acl_id = $acl_id;
 		$user->save();
 
 		$this->info("User <fg=white>{$email}</fg=white> was created");
@@ -52,12 +55,9 @@ class UserCreatorCommand extends Command {
 	 *
 	 * @return array
 	 */
-	protected function getArguments() {
-		return array(
-			array('email', InputArgument::REQUIRED, 'Desired email'),
-			array('password', InputArgument::REQUIRED, 'Desired password'),
-            array('acl_id', InputArgument::REQUIRED, 'Desired Access Control List Id')
-		);
+	protected function getArguments()
+	{
+		return array(array('email', InputArgument::REQUIRED, 'Desired email'), array('password', InputArgument::REQUIRED, 'Desired password'), array('acl_id', InputArgument::REQUIRED, 'Desired Access Control List Id'));
 	}
 
 }

@@ -2,7 +2,8 @@
 
 use Illuminate\Filesystem\Filesystem;
 
-class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterface {
+class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterface
+{
 
 	/**
 	 * The filesystem instance.
@@ -21,8 +22,8 @@ class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterf
 	/**
 	 * Create a new file environment loader instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
-	 * @param  string  $path
+	 * @param  \Illuminate\Filesystem\Filesystem $files
+	 * @param  string $path
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, $path = null)
@@ -34,15 +35,15 @@ class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterf
 	/**
 	 * Load the environment variables for the given environment.
 	 *
-	 * @param  string  $environment
+	 * @param  string $environment
 	 * @return array
 	 */
 	public function load($environment = null)
 	{
-		if ($environment == 'production') $environment = null;
+		if ($environment == 'production')
+			$environment = null;
 
-		if ( ! $this->files->exists($path = $this->getFile($environment)))
-		{
+		if (!$this->files->exists($path = $this->getFile($environment))) {
 			return array();
 		}
 
@@ -52,17 +53,16 @@ class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterf
 	/**
 	 * Get the file for the given environment.
 	 *
-	 * @param  string  $environment
+	 * @param  string $environment
 	 * @return string
 	 */
 	protected function getFile($environment)
 	{
-		if ($environment)
-		{
-			return $this->path.'/.env.'.$environment.'.php';
+		if ($environment) {
+			return $this->path . '/.env.' . $environment . '.php';
 		}
 
-		return $this->path.'/.env.php';
+		return $this->path . '/.env.php';
 	}
 
 }

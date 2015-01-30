@@ -7,7 +7,8 @@ use Illuminate\Queue\Console\FlushFailedCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
 use Illuminate\Queue\Console\ForgetFailedCommand;
 
-class FailConsoleServiceProvider extends ServiceProvider {
+class FailConsoleServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -23,35 +24,27 @@ class FailConsoleServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bindShared('command.queue.failed', function()
-		{
+		$this->app->bindShared('command.queue.failed', function () {
 			return new ListFailedCommand;
 		});
 
-		$this->app->bindShared('command.queue.retry', function()
-		{
+		$this->app->bindShared('command.queue.retry', function () {
 			return new RetryCommand;
 		});
 
-		$this->app->bindShared('command.queue.forget', function()
-		{
+		$this->app->bindShared('command.queue.forget', function () {
 			return new ForgetFailedCommand;
 		});
 
-		$this->app->bindShared('command.queue.flush', function()
-		{
+		$this->app->bindShared('command.queue.flush', function () {
 			return new FlushFailedCommand;
 		});
 
-		$this->app->bindShared('command.queue.failed-table', function($app)
-		{
+		$this->app->bindShared('command.queue.failed-table', function ($app) {
 			return new FailedTableCommand($app['files']);
 		});
 
-		$this->commands(
-			'command.queue.failed', 'command.queue.retry', 'command.queue.forget',
-			'command.queue.flush', 'command.queue.failed-table'
-		);
+		$this->commands('command.queue.failed', 'command.queue.retry', 'command.queue.forget', 'command.queue.flush', 'command.queue.failed-table');
 	}
 
 	/**
@@ -61,9 +54,7 @@ class FailConsoleServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array(
-			'command.queue.failed', 'command.queue.retry', 'command.queue.forget', 'command.queue.flush', 'command.queue.failed-table',
-		);
+		return array('command.queue.failed', 'command.queue.retry', 'command.queue.forget', 'command.queue.flush', 'command.queue.failed-table',);
 	}
 
 }

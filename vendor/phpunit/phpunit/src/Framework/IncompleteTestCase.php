@@ -56,68 +56,68 @@
  */
 class PHPUnit_Framework_IncompleteTestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var string
-     */
-    protected $message = '';
+	/**
+	 * @var string
+	 */
+	protected $message = '';
 
-    /**
-     * @var boolean
-     */
-    protected $backupGlobals = false;
+	/**
+	 * @var boolean
+	 */
+	protected $backupGlobals = false;
 
-    /**
-     * @var boolean
-     */
-    protected $backupStaticAttributes = false;
+	/**
+	 * @var boolean
+	 */
+	protected $backupStaticAttributes = false;
 
-    /**
-     * @var boolean
-     */
-    protected $runTestInSeparateProcess = false;
+	/**
+	 * @var boolean
+	 */
+	protected $runTestInSeparateProcess = false;
 
-    /**
-     * @var boolean
-     */
-    protected $useErrorHandler = false;
+	/**
+	 * @var boolean
+	 */
+	protected $useErrorHandler = false;
 
-    /**
-     * @var boolean
-     */
-    protected $useOutputBuffering = false;
+	/**
+	 * @var boolean
+	 */
+	protected $useOutputBuffering = false;
 
-    /**
-     * @param string $message
-     */
-    public function __construct($className, $methodName, $message = '')
-    {
-        $this->message = $message;
-        parent::__construct($className . '::' . $methodName);
-    }
+	/**
+	 * @param string $message
+	 */
+	public function __construct($className, $methodName, $message = '')
+	{
+		$this->message = $message;
+		parent::__construct($className . '::' . $methodName);
+	}
 
-    /**
-     * @throws PHPUnit_Framework_Exception
-     */
-    protected function runTest()
-    {
-        $this->markTestIncomplete($this->message);
-    }
+	/**
+	 * @throws PHPUnit_Framework_Exception
+	 */
+	protected function runTest()
+	{
+		$this->markTestIncomplete($this->message);
+	}
 
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
+	/**
+	 * @return string
+	 */
+	public function getMessage()
+	{
+		return $this->message;
+	}
 
-    /**
-     * Returns a string representation of the test case.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return $this->getName();
-    }
+	/**
+	 * Returns a string representation of the test case.
+	 *
+	 * @return string
+	 */
+	public function toString()
+	{
+		return $this->getName();
+	}
 }

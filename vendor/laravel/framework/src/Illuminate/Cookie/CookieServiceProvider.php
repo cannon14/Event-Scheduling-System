@@ -2,7 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class CookieServiceProvider extends ServiceProvider {
+class CookieServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Register the service provider.
@@ -11,8 +12,7 @@ class CookieServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bindShared('cookie', function($app)
-		{
+		$this->app->bindShared('cookie', function ($app) {
 			$config = $app['config']['session'];
 
 			return (new CookieJar)->setDefaultPathAndDomain($config['path'], $config['domain']);

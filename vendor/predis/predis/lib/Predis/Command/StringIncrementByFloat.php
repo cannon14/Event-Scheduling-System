@@ -17,11 +17,11 @@ namespace Predis\Command;
  */
 class StringIncrementByFloat extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'INCRBYFLOAT';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'INCRBYFLOAT';
+	}
 }

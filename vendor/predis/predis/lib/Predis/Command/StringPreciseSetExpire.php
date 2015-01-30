@@ -17,11 +17,11 @@ namespace Predis\Command;
  */
 class StringPreciseSetExpire extends StringSetExpire
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'PSETEX';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'PSETEX';
+	}
 }

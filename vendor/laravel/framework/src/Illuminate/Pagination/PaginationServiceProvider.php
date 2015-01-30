@@ -2,7 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class PaginationServiceProvider extends ServiceProvider {
+class PaginationServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -18,8 +19,7 @@ class PaginationServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bindShared('paginator', function($app)
-		{
+		$this->app->bindShared('paginator', function ($app) {
 			$paginator = new Factory($app['request'], $app['view'], $app['translator']);
 
 			$paginator->setViewName($app['config']['view.pagination']);

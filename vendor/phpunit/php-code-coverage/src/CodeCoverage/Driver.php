@@ -21,15 +21,15 @@
  */
 interface PHP_CodeCoverage_Driver
 {
-    /**
-     * Start collection of code coverage information.
-     */
-    public function start();
+	/**
+	 * Start collection of code coverage information.
+	 */
+	public function start();
 
-    /**
-     * Stop collection of code coverage information.
-     *
-     * @return array
-     */
-    public function stop();
+	/**
+	 * Stop collection of code coverage information.
+	 *
+	 * @return array
+	 */
+	public function stop();
 }

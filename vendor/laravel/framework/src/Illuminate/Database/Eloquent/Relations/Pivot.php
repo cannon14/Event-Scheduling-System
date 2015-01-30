@@ -3,7 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class Pivot extends Model {
+class Pivot extends Model
+{
 
 	/**
 	 * The parent model of the relationship.
@@ -36,10 +37,10 @@ class Pivot extends Model {
 	/**
 	 * Create a new pivot model instance.
 	 *
-	 * @param  \Illuminate\Database\Eloquent\Model  $parent
-	 * @param  array   $attributes
-	 * @param  string  $table
-	 * @param  bool    $exists
+	 * @param  \Illuminate\Database\Eloquent\Model $parent
+	 * @param  array $attributes
+	 * @param  string $table
+	 * @param  bool $exists
 	 * @return void
 	 */
 	public function __construct(Model $parent, $attributes, $table, $exists = false)
@@ -125,8 +126,8 @@ class Pivot extends Model {
 	/**
 	 * Set the key names for the pivot model instance.
 	 *
-	 * @param  string  $foreignKey
-	 * @param  string  $otherKey
+	 * @param  string $foreignKey
+	 * @param  string $otherKey
 	 * @return $this
 	 */
 	public function setPivotKeys($foreignKey, $otherKey)

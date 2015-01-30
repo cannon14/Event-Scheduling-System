@@ -65,7 +65,7 @@
  * Include Crypt_Rijndael
  */
 if (!class_exists('Crypt_Rijndael')) {
-    include_once 'Rijndael.php';
+	include_once 'Rijndael.php';
 }
 
 /**#@+
@@ -130,78 +130,78 @@ define('CRYPT_AES_MODE_MCRYPT', CRYPT_MODE_MCRYPT);
  */
 class Crypt_AES extends Crypt_Rijndael
 {
-    /**
-     * The namespace used by the cipher for its constants.
-     *
-     * @see Crypt_Base::const_namespace
-     * @var String
-     * @access private
-     */
-    var $const_namespace = 'AES';
+	/**
+	 * The namespace used by the cipher for its constants.
+	 *
+	 * @see Crypt_Base::const_namespace
+	 * @var String
+	 * @access private
+	 */
+	var $const_namespace = 'AES';
 
-    /**
-     * Dummy function
-     *
-     * Since Crypt_AES extends Crypt_Rijndael, this function is, technically, available, but it doesn't do anything.
-     *
-     * @see Crypt_Rijndael::setBlockLength()
-     * @access public
-     * @param Integer $length
-     */
-    function setBlockLength($length)
-    {
-        return;
-    }
+	/**
+	 * Dummy function
+	 *
+	 * Since Crypt_AES extends Crypt_Rijndael, this function is, technically, available, but it doesn't do anything.
+	 *
+	 * @see Crypt_Rijndael::setBlockLength()
+	 * @access public
+	 * @param Integer $length
+	 */
+	function setBlockLength($length)
+	{
+		return;
+	}
 
-    /**
-     * Sets the key length
-     *
-     * Valid key lengths are 128, 192, and 256.  If the length is less than 128, it will be rounded up to
-     * 128.  If the length is greater than 128 and invalid, it will be rounded down to the closest valid amount.
-     *
-     * @see Crypt_Rijndael:setKeyLength()
-     * @access public
-     * @param Integer $length
-     */
-    function setKeyLength($length)
-    {
-        switch ($length) {
-            case 160:
-                $length = 192;
-                break;
-            case 224:
-                $length = 256;
-        }
-        parent::setKeyLength($length);
-    }
+	/**
+	 * Sets the key length
+	 *
+	 * Valid key lengths are 128, 192, and 256.  If the length is less than 128, it will be rounded up to
+	 * 128.  If the length is greater than 128 and invalid, it will be rounded down to the closest valid amount.
+	 *
+	 * @see Crypt_Rijndael:setKeyLength()
+	 * @access public
+	 * @param Integer $length
+	 */
+	function setKeyLength($length)
+	{
+		switch ($length) {
+			case 160:
+				$length = 192;
+				break;
+			case 224:
+				$length = 256;
+		}
+		parent::setKeyLength($length);
+	}
 
-    /**
-     * Sets the key.
-     *
-     * Rijndael supports five different key lengths, AES only supports three.
-     *
-     * @see Crypt_Rijndael:setKey()
-     * @see setKeyLength()
-     * @access public
-     * @param String $key
-     */
-    function setKey($key)
-    {
-        parent::setKey($key);
+	/**
+	 * Sets the key.
+	 *
+	 * Rijndael supports five different key lengths, AES only supports three.
+	 *
+	 * @see Crypt_Rijndael:setKey()
+	 * @see setKeyLength()
+	 * @access public
+	 * @param String $key
+	 */
+	function setKey($key)
+	{
+		parent::setKey($key);
 
-        if (!$this->explicit_key_length) {
-            $length = strlen($key);
-            switch (true) {
-                case $length <= 16:
-                    $this->key_size = 16;
-                    break;
-                case $length <= 24:
-                    $this->key_size = 24;
-                    break;
-                default:
-                    $this->key_size = 32;
-            }
-            $this->_setupEngine();
-        }
-    }
+		if (!$this->explicit_key_length) {
+			$length = strlen($key);
+			switch (true) {
+				case $length <= 16:
+					$this->key_size = 16;
+					break;
+				case $length <= 24:
+					$this->key_size = 24;
+					break;
+				default:
+					$this->key_size = 32;
+			}
+			$this->_setupEngine();
+		}
+	}
 }

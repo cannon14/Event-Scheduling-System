@@ -47,29 +47,29 @@ use PHPUnit_Framework_TestCase;
 
 class ConsoleTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \SebastianBergmann\Environment\Console
-     */
-    private $console;
+	/**
+	 * @var \SebastianBergmann\Environment\Console
+	 */
+	private $console;
 
-    protected function setUp()
-    {
-        $this->console = new Console;
-    }
+	protected function setUp()
+	{
+		$this->console = new Console;
+	}
 
-    /**
-     * @covers \SebastianBergmann\Environment\Console::hasColorSupport
-     */
-    public function testCanDetectColorSupport()
-    {
-        $this->assertInternalType('boolean', $this->console->hasColorSupport());
-    }
+	/**
+	 * @covers \SebastianBergmann\Environment\Console::hasColorSupport
+	 */
+	public function testCanDetectColorSupport()
+	{
+		$this->assertInternalType('boolean', $this->console->hasColorSupport());
+	}
 
-    /**
-     * @covers \SebastianBergmann\Environment\Console::hasColorSupport
-     */
-    public function testCanDetectNumberOfColumns()
-    {
-        $this->assertInternalType('integer', $this->console->getNumberOfColumns());
-    }
+	/**
+	 * @covers \SebastianBergmann\Environment\Console::hasColorSupport
+	 */
+	public function testCanDetectNumberOfColumns()
+	{
+		$this->assertInternalType('integer', $this->console->getNumberOfColumns());
+	}
 }

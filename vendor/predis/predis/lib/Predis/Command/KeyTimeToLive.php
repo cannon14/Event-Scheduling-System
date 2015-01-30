@@ -17,11 +17,11 @@ namespace Predis\Command;
  */
 class KeyTimeToLive extends PrefixableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'TTL';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'TTL';
+	}
 }

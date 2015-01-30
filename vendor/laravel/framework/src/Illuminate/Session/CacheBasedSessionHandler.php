@@ -2,7 +2,8 @@
 
 use Illuminate\Cache\Repository;
 
-class CacheBasedSessionHandler implements \SessionHandlerInterface {
+class CacheBasedSessionHandler implements \SessionHandlerInterface
+{
 
 	/**
 	 * The cache repository instance.
@@ -21,8 +22,8 @@ class CacheBasedSessionHandler implements \SessionHandlerInterface {
 	/**
 	 * Create a new cache driven handler instance.
 	 *
-	 * @param  \Illuminate\Cache\Repository  $cache
-	 * @param  int  $minutes
+	 * @param  \Illuminate\Cache\Repository $cache
+	 * @param  int $minutes
 	 * @return void
 	 */
 	public function __construct(Repository $cache, $minutes)

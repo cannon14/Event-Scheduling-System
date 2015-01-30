@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="tests/bootstrap.php"
          colors="true"
->
+        >
     <testsuites>
         <testsuite name="phpseclib Unit Test Suite">
             <directory>./tests/Unit/</directory>

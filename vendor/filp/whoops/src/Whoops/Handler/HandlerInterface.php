@@ -12,26 +12,26 @@ use Whoops\Run;
 
 interface HandlerInterface
 {
-    /**
-     * @return int|null A handler may return nothing, or a Handler::HANDLE_* constant
-     */
-    public function handle();
+	/**
+	 * @return int|null A handler may return nothing, or a Handler::HANDLE_* constant
+	 */
+	public function handle();
 
-    /**
-     * @param  Run  $run
-     * @return void
-     */
-    public function setRun(Run $run);
+	/**
+	 * @param  Run $run
+	 * @return void
+	 */
+	public function setRun(Run $run);
 
-    /**
-     * @param  Exception $exception
-     * @return void
-     */
-    public function setException(Exception $exception);
+	/**
+	 * @param  Exception $exception
+	 * @return void
+	 */
+	public function setException(Exception $exception);
 
-    /**
-     * @param  Inspector $inspector
-     * @return void
-     */
-    public function setInspector(Inspector $inspector);
+	/**
+	 * @param  Inspector $inspector
+	 * @return void
+	 */
+	public function setInspector(Inspector $inspector);
 }

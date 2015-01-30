@@ -3,7 +3,8 @@
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class Composer {
+class Composer
+{
 
 	/**
 	 * The filesystem instance.
@@ -22,8 +23,8 @@ class Composer {
 	/**
 	 * Create a new Composer manager instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
-	 * @param  string  $workingPath
+	 * @param  \Illuminate\Filesystem\Filesystem $files
+	 * @param  string $workingPath
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, $workingPath = null)
@@ -35,14 +36,14 @@ class Composer {
 	/**
 	 * Regenerate the Composer autoloader files.
 	 *
-	 * @param  string  $extra
+	 * @param  string $extra
 	 * @return void
 	 */
 	public function dumpAutoloads($extra = '')
 	{
 		$process = $this->getProcess();
 
-		$process->setCommandLine(trim($this->findComposer().' dump-autoload '.$extra));
+		$process->setCommandLine(trim($this->findComposer() . ' dump-autoload ' . $extra));
 
 		$process->run();
 	}
@@ -64,9 +65,8 @@ class Composer {
 	 */
 	protected function findComposer()
 	{
-		if ($this->files->exists($this->workingPath.'/composer.phar'))
-		{
-			return '"'.PHP_BINARY.'" composer.phar';
+		if ($this->files->exists($this->workingPath . '/composer.phar')) {
+			return '"' . PHP_BINARY . '" composer.phar';
 		}
 
 		return 'composer';
@@ -85,7 +85,7 @@ class Composer {
 	/**
 	 * Set the working path used by the class.
 	 *
-	 * @param  string  $path
+	 * @param  string $path
 	 * @return $this
 	 */
 	public function setWorkingPath($path)

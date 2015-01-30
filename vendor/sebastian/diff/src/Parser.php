@@ -56,92 +56,84 @@ namespace SebastianBergmann\Diff;
  */
 class Parser
 {
-    /**
-     * @param  string $string
-     * @return Diff[]
-     */
-    public function parse($string)
-    {
-        $lines     = preg_split('(\r\n|\r|\n)', $string);
-        $lineCount = count($lines);
-        $diffs     = array();
-        $diff      = null;
-        $collected = array();
+	/**
+	 * @param  string $string
+	 * @return Diff[]
+	 */
+	public function parse($string)
+	{
+		$lines = preg_split('(\r\n|\r|\n)', $string);
+		$lineCount = count($lines);
+		$diffs = array();
+		$diff = null;
+		$collected = array();
 
-        for ($i = 0; $i < $lineCount; ++$i) {
-            if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
-                preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch)) {
-                if ($diff !== null) {
-                    $this->parseFileDiff($diff, $collected);
-                    $diffs[]   = $diff;
-                    $collected = array();
-                }
+		for ($i = 0; $i < $lineCount; ++$i) {
+			if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) && preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch)) {
+				if ($diff !== null) {
+					$this->parseFileDiff($diff, $collected);
+					$diffs[] = $diff;
+					$collected = array();
+				}
 
-                $diff = new Diff($fromMatch['file'], $toMatch['file']);
-                ++$i;
-            } else {
-                $collected[] = $lines[$i];
-            }
-        }
+				$diff = new Diff($fromMatch['file'], $toMatch['file']);
+				++$i;
+			} else {
+				$collected[] = $lines[$i];
+			}
+		}
 
-        if (count($collected) && ($diff !== null)) {
-            $this->parseFileDiff($diff, $collected);
-            $diffs[] = $diff;
-        }
+		if (count($collected) && ($diff !== null)) {
+			$this->parseFileDiff($diff, $collected);
+			$diffs[] = $diff;
+		}
 
-        return $diffs;
-    }
+		return $diffs;
+	}
 
-    /**
-     * @param Diff  $diff
-     * @param array $lines
-     */
-    private function parseFileDiff(Diff $diff, array $lines)
-    {
-        $chunks = array();
+	/**
+	 * @param Diff $diff
+	 * @param array $lines
+	 */
+	private function parseFileDiff(Diff $diff, array $lines)
+	{
+		$chunks = array();
 
-        while (count($lines)) {
-            while (!preg_match('(^@@\\s+-(?P<start>\\d+)(?:,\\s*(?P<startrange>\\d+))?\\s+\\+(?P<end>\\d+)(?:,\\s*(?P<endrange>\\d+))?\\s+@@)', $last = array_shift($lines), $match)) {
-                if ($last === null) {
-                    break 2;
-                }
-            }
+		while (count($lines)) {
+			while (!preg_match('(^@@\\s+-(?P<start>\\d+)(?:,\\s*(?P<startrange>\\d+))?\\s+\\+(?P<end>\\d+)(?:,\\s*(?P<endrange>\\d+))?\\s+@@)', $last = array_shift($lines), $match)) {
+				if ($last === null) {
+					break 2;
+				}
+			}
 
-            $chunk = new Chunk(
-                $match['start'],
-                isset($match['startrange']) ? max(1, $match['startrange']) : 1,
-                $match['end'],
-                isset($match['endrange']) ? max(1, $match['endrange']) : 1
-            );
+			$chunk = new Chunk($match['start'], isset($match['startrange']) ? max(1, $match['startrange']) : 1, $match['end'], isset($match['endrange']) ? max(1, $match['endrange']) : 1);
 
-            $diffLines = array();
-            $last      = null;
+			$diffLines = array();
+			$last = null;
 
-            while (count($lines) &&
-                  (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) ||
-                  (strpos($last, '\\ No newline at end of file') === 0))) {
-                if (count($match)) {
-                    $type = Line::UNCHANGED;
+			while (count($lines) && (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) || (strpos($last, '\\ No newline at end of file') === 0))) {
+				if (count($match)) {
+					$type = Line::UNCHANGED;
 
-                    if ($match['type'] == '+') {
-                        $type = Line::ADDED;
-                    } elseif ($match['type'] == '-') {
-                        $type = Line::REMOVED;
-                    }
+					if ($match['type'] == '+') {
+						$type = Line::ADDED;
+					} elseif ($match['type'] == '-') {
+						$type = Line::REMOVED;
+					}
 
-                    $diffLines[] = new Line($type, $match['line']);
-                }
-            }
+					$diffLines[] = new Line($type, $match['line']);
+				}
+			}
 
-            $chunk->setLines($diffLines);
+			$chunk->setLines($diffLines);
 
-            $chunks[] = $chunk;
+			$chunks[] = $chunk;
 
-            if ($last !== null) {
-                array_unshift($lines, $last);
-            }
-        }
+			if ($last !== null) {
+				array_unshift($lines, $last);
+			}
+		}
 
-        $diff->setChunks($chunks);
-    }
+		$diff->setChunks($chunks);
+	}
 }

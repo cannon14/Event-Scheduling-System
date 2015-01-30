@@ -2,7 +2,8 @@
 
 use Illuminate\Filesystem\Filesystem;
 
-class FileViewFinder implements ViewFinderInterface {
+class FileViewFinder implements ViewFinderInterface
+{
 
 	/**
 	 * The filesystem instance.
@@ -49,9 +50,9 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Create a new file view loader instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
-	 * @param  array  $paths
-	 * @param  array  $extensions
+	 * @param  \Illuminate\Filesystem\Filesystem $files
+	 * @param  array $paths
+	 * @param  array $extensions
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, array $paths, array $extensions = null)
@@ -59,8 +60,7 @@ class FileViewFinder implements ViewFinderInterface {
 		$this->files = $files;
 		$this->paths = $paths;
 
-		if (isset($extensions))
-		{
+		if (isset($extensions)) {
 			$this->extensions = $extensions;
 		}
 	}
@@ -68,15 +68,15 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Get the fully qualified location of the view.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return string
 	 */
 	public function find($name)
 	{
-		if (isset($this->views[$name])) return $this->views[$name];
+		if (isset($this->views[$name]))
+			return $this->views[$name];
 
-		if ($this->hasHintInformation($name = trim($name)))
-		{
+		if ($this->hasHintInformation($name = trim($name))) {
 			return $this->views[$name] = $this->findNamedPathView($name);
 		}
 
@@ -86,7 +86,7 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Get the path to a template with a named path.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return string
 	 */
 	protected function findNamedPathView($name)
@@ -99,7 +99,7 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Get the segments of a template with a named path.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return array
 	 *
 	 * @throws \InvalidArgumentException
@@ -108,13 +108,11 @@ class FileViewFinder implements ViewFinderInterface {
 	{
 		$segments = explode(static::HINT_PATH_DELIMITER, $name);
 
-		if (count($segments) != 2)
-		{
+		if (count($segments) != 2) {
 			throw new \InvalidArgumentException("View [$name] has an invalid name.");
 		}
 
-		if ( ! isset($this->hints[$segments[0]]))
-		{
+		if (!isset($this->hints[$segments[0]])) {
 			throw new \InvalidArgumentException("No hint path defined for [{$segments[0]}].");
 		}
 
@@ -124,20 +122,17 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Find the given view in the list of paths.
 	 *
-	 * @param  string  $name
-	 * @param  array   $paths
+	 * @param  string $name
+	 * @param  array $paths
 	 * @return string
 	 *
 	 * @throws \InvalidArgumentException
 	 */
 	protected function findInPaths($name, $paths)
 	{
-		foreach ((array) $paths as $path)
-		{
-			foreach ($this->getPossibleViewFiles($name) as $file)
-			{
-				if ($this->files->exists($viewPath = $path.'/'.$file))
-				{
+		foreach ((array)$paths as $path) {
+			foreach ($this->getPossibleViewFiles($name) as $file) {
+				if ($this->files->exists($viewPath = $path . '/' . $file)) {
 					return $viewPath;
 				}
 			}
@@ -149,14 +144,13 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Get an array of possible view files.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return array
 	 */
 	protected function getPossibleViewFiles($name)
 	{
-		return array_map(function($extension) use ($name)
-		{
-			return str_replace('.', '/', $name).'.'.$extension;
+		return array_map(function ($extension) use ($name) {
+			return str_replace('.', '/', $name) . '.' . $extension;
 
 		}, $this->extensions);
 	}
@@ -164,7 +158,7 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Add a location to the finder.
 	 *
-	 * @param  string  $location
+	 * @param  string $location
 	 * @return void
 	 */
 	public function addLocation($location)
@@ -175,16 +169,15 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Add a namespace hint to the finder.
 	 *
-	 * @param  string  $namespace
-	 * @param  string|array  $hints
+	 * @param  string $namespace
+	 * @param  string|array $hints
 	 * @return void
 	 */
 	public function addNamespace($namespace, $hints)
 	{
-		$hints = (array) $hints;
+		$hints = (array)$hints;
 
-		if (isset($this->hints[$namespace]))
-		{
+		if (isset($this->hints[$namespace])) {
 			$hints = array_merge($this->hints[$namespace], $hints);
 		}
 
@@ -194,16 +187,15 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Prepend a namespace hint to the finder.
 	 *
-	 * @param  string  $namespace
-	 * @param  string|array  $hints
+	 * @param  string $namespace
+	 * @param  string|array $hints
 	 * @return void
 	 */
 	public function prependNamespace($namespace, $hints)
 	{
-		$hints = (array) $hints;
+		$hints = (array)$hints;
 
-		if (isset($this->hints[$namespace]))
-		{
+		if (isset($this->hints[$namespace])) {
 			$hints = array_merge($hints, $this->hints[$namespace]);
 		}
 
@@ -213,13 +205,12 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Register an extension with the view finder.
 	 *
-	 * @param  string  $extension
+	 * @param  string $extension
 	 * @return void
 	 */
 	public function addExtension($extension)
 	{
-		if (($index = array_search($extension, $this->extensions)) !== false)
-		{
+		if (($index = array_search($extension, $this->extensions)) !== false) {
 			unset($this->extensions[$index]);
 		}
 
@@ -229,7 +220,7 @@ class FileViewFinder implements ViewFinderInterface {
 	/**
 	 * Returns whether or not the view specify a hint information.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return boolean
 	 */
 	public function hasHintInformation($name)

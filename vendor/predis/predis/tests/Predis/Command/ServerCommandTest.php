@@ -17,102 +17,96 @@ namespace Predis\Command;
  */
 class ServerCommandTest extends PredisCommandTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExpectedCommand()
-    {
-        return 'Predis\Command\ServerCommand';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getExpectedCommand()
+	{
+		return 'Predis\Command\ServerCommand';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExpectedId()
-    {
-        return 'COMMAND';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getExpectedId()
+	{
+		return 'COMMAND';
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testFilterArguments()
-    {
-        $arguments = array('INFO', 'DEL');
-        $expected = array('INFO', 'DEL');
+	/**
+	 * @group disconnected
+	 */
+	public function testFilterArguments()
+	{
+		$arguments = array('INFO', 'DEL');
+		$expected = array('INFO', 'DEL');
 
-        $command = $this->getCommand();
-        $command->setArguments($arguments);
+		$command = $this->getCommand();
+		$command->setArguments($arguments);
 
-        $this->assertSame($expected, $command->getArguments());
-    }
+		$this->assertSame($expected, $command->getArguments());
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testParseResponse()
-    {
-        $raw = array(
-            array('get', 2, array('readonly', 'fast'), 1, 1, 1),
-            array('set', -3, array('write', 'denyoom'), 1, 1, 1),
-            array('watch', -2, array('readonly', 'noscript', 'fast'), 1, -1, 1),
-            array('unwatch', 1, array('readonly', 'noscript', 'fast'), 0, 0, 0),
-            array('info', -1, array('readonly', 'loading', 'stale'), 0, 0, 0),
-        );
+	/**
+	 * @group disconnected
+	 */
+	public function testParseResponse()
+	{
+		$raw = array(array('get', 2, array('readonly', 'fast'), 1, 1, 1), array('set', -3, array('write', 'denyoom'), 1, 1, 1), array('watch', -2, array('readonly', 'noscript', 'fast'), 1, -1, 1), array('unwatch', 1, array('readonly', 'noscript', 'fast'), 0, 0, 0), array('info', -1, array('readonly', 'loading', 'stale'), 0, 0, 0),);
 
-        $expected = $raw;
+		$expected = $raw;
 
-        $command = $this->getCommand();
+		$command = $this->getCommand();
 
-        $this->assertSame($expected, $command->parseResponse($raw));
-    }
+		$this->assertSame($expected, $command->parseResponse($raw));
+	}
 
-    /**
-     * @group disconnected
-     */
-    public function testParseEmptyResponse()
-    {
-        $raw = array(null);
-        $expected = array(null);
+	/**
+	 * @group disconnected
+	 */
+	public function testParseEmptyResponse()
+	{
+		$raw = array(null);
+		$expected = array(null);
 
-        $command = $this->getCommand();
+		$command = $this->getCommand();
 
-        $this->assertSame($expected, $command->parseResponse($raw));
-    }
+		$this->assertSame($expected, $command->parseResponse($raw));
+	}
 
-    /**
-     * @group connected
-     * @requiresRedisVersion >= 2.8.13
-     */
-    public function testReturnsEmptyCommandInfoOnNonExistingCommand()
-    {
-        $redis = $this->getClient();
+	/**
+	 * @group connected
+	 * @requiresRedisVersion >= 2.8.13
+	 */
+	public function testReturnsEmptyCommandInfoOnNonExistingCommand()
+	{
+		$redis = $this->getClient();
 
-        $this->assertCount(1, $response = $redis->command('INFO', 'FOOBAR'));
-        $this->assertSame(array(null), $response);
-    }
+		$this->assertCount(1, $response = $redis->command('INFO', 'FOOBAR'));
+		$this->assertSame(array(null), $response);
+	}
 
-    /**
-     * @group connected
-     * @requiresRedisVersion >= 2.8.13
-     */
-    public function testReturnsCommandInfoOnExistingCommand()
-    {
-        $redis = $this->getClient();
+	/**
+	 * @group connected
+	 * @requiresRedisVersion >= 2.8.13
+	 */
+	public function testReturnsCommandInfoOnExistingCommand()
+	{
+		$redis = $this->getClient();
 
-        $expected = array(array('command', 0, array('readonly', 'loading', 'stale'), 0, 0, 0));
-        $this->assertCount(1, $response = $redis->command('INFO', 'COMMAND'));
-        $this->assertSame($expected, $response);
-    }
+		$expected = array(array('command', 0, array('readonly', 'loading', 'stale'), 0, 0, 0));
+		$this->assertCount(1, $response = $redis->command('INFO', 'COMMAND'));
+		$this->assertSame($expected, $response);
+	}
 
-    /**
-     * @group connected
-     * @requiresRedisVersion >= 2.8.13
-     */
-    public function testReturnsListOfCommandInfoWithNoArguments()
-    {
-        $redis = $this->getClient();
+	/**
+	 * @group connected
+	 * @requiresRedisVersion >= 2.8.13
+	 */
+	public function testReturnsListOfCommandInfoWithNoArguments()
+	{
+		$redis = $this->getClient();
 
-        $this->assertGreaterThan(100, count($response = $redis->command()));
-    }
+		$this->assertGreaterThan(100, count($response = $redis->command()));
+	}
 }

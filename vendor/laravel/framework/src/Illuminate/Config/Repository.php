@@ -4,7 +4,8 @@ use Closure;
 use ArrayAccess;
 use Illuminate\Support\NamespacedItemResolver;
 
-class Repository extends NamespacedItemResolver implements ArrayAccess {
+class Repository extends NamespacedItemResolver implements ArrayAccess
+{
 
 	/**
 	 * The loader implementation.
@@ -44,8 +45,8 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Create a new configuration repository.
 	 *
-	 * @param  \Illuminate\Config\LoaderInterface  $loader
-	 * @param  string  $environment
+	 * @param  \Illuminate\Config\LoaderInterface $loader
+	 * @param  string $environment
 	 * @return void
 	 */
 	public function __construct(LoaderInterface $loader, $environment)
@@ -57,7 +58,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Determine if the given configuration value exists.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return bool
 	 */
 	public function has($key)
@@ -70,7 +71,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Determine if a configuration group exists.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return bool
 	 */
 	public function hasGroup($key)
@@ -83,8 +84,8 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Get the specified configuration value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
+	 * @param  string $key
+	 * @param  mixed $default
 	 * @return mixed
 	 */
 	public function get($key, $default = null)
@@ -104,8 +105,8 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Set a given configuration value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 */
 	public function set($key, $value)
@@ -119,12 +120,9 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// get overwritten if a different item in the group is requested later.
 		$this->load($group, $namespace, $collection);
 
-		if (is_null($item))
-		{
+		if (is_null($item)) {
 			$this->items[$collection] = $value;
-		}
-		else
-		{
+		} else {
 			array_set($this->items[$collection], $item, $value);
 		}
 	}
@@ -132,9 +130,9 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Load the configuration group for the key.
 	 *
-	 * @param  string  $group
-	 * @param  string  $namespace
-	 * @param  string  $collection
+	 * @param  string $group
+	 * @param  string $namespace
+	 * @param  string $collection
 	 * @return void
 	 */
 	protected function load($group, $namespace, $collection)
@@ -144,8 +142,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// If we've already loaded this collection, we will just bail out since we do
 		// not want to load it again. Once items are loaded a first time they will
 		// stay kept in memory within this class and not loaded from disk again.
-		if (isset($this->items[$collection]))
-		{
+		if (isset($this->items[$collection])) {
 			return;
 		}
 
@@ -154,8 +151,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// If we've already loaded this collection, we will just bail out since we do
 		// not want to load it again. Once items are loaded a first time they will
 		// stay kept in memory within this class and not loaded from disk again.
-		if (isset($this->afterLoad[$namespace]))
-		{
+		if (isset($this->afterLoad[$namespace])) {
 			$items = $this->callAfterLoad($namespace, $group, $items);
 		}
 
@@ -165,9 +161,9 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Call the after load callback for a namespace.
 	 *
-	 * @param  string  $namespace
-	 * @param  string  $group
-	 * @param  array   $items
+	 * @param  string $namespace
+	 * @param  string $group
+	 * @param  array $items
 	 * @return array
 	 */
 	protected function callAfterLoad($namespace, $group, $items)
@@ -180,7 +176,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Parse an array of namespaced segments.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return array
 	 */
 	protected function parseNamespacedSegments($key)
@@ -190,8 +186,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// If the namespace is registered as a package, we will just assume the group
 		// is equal to the namespace since all packages cascade in this way having
 		// a single file per package, otherwise we'll just parse them as normal.
-		if (in_array($namespace, $this->packages))
-		{
+		if (in_array($namespace, $this->packages)) {
 			return $this->parsePackageSegments($key, $namespace, $item);
 		}
 
@@ -201,9 +196,9 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Parse the segments of a package namespace.
 	 *
-	 * @param  string  $key
-	 * @param  string  $namespace
-	 * @param  string  $item
+	 * @param  string $key
+	 * @param  string $namespace
+	 * @param  string $item
 	 * @return array
 	 */
 	protected function parsePackageSegments($key, $namespace, $item)
@@ -213,8 +208,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// If the configuration file doesn't exist for the given package group we can
 		// assume that we should implicitly use the config file matching the name
 		// of the namespace. Generally packages should use one type or another.
-		if ( ! $this->loader->exists($itemSegments[0], $namespace))
-		{
+		if (!$this->loader->exists($itemSegments[0], $namespace)) {
 			return array($namespace, 'config', $item);
 		}
 
@@ -224,9 +218,9 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Register a package for cascading configuration.
 	 *
-	 * @param  string  $package
-	 * @param  string  $hint
-	 * @param  string  $namespace
+	 * @param  string $package
+	 * @param  string $hint
+	 * @param  string $namespace
 	 * @return void
 	 */
 	public function package($package, $hint, $namespace = null)
@@ -240,8 +234,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 		// callback so that we can cascade an application package configuration.
 		$this->addNamespace($namespace, $hint);
 
-		$this->afterLoading($namespace, function($me, $group, $items) use ($package)
-		{
+		$this->afterLoading($namespace, function ($me, $group, $items) use ($package) {
 			$env = $me->getEnvironment();
 
 			$loader = $me->getLoader();
@@ -253,14 +246,13 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Get the configuration namespace for a package.
 	 *
-	 * @param  string  $package
-	 * @param  string  $namespace
+	 * @param  string $package
+	 * @param  string $namespace
 	 * @return string
 	 */
 	protected function getPackageNamespace($package, $namespace)
 	{
-		if (is_null($namespace))
-		{
+		if (is_null($namespace)) {
 			list($vendor, $namespace) = explode('/', $package);
 		}
 
@@ -270,8 +262,8 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Register an after load callback for a given namespace.
 	 *
-	 * @param  string   $namespace
-	 * @param  \Closure  $callback
+	 * @param  string $namespace
+	 * @param  \Closure $callback
 	 * @return void
 	 */
 	public function afterLoading($namespace, Closure $callback)
@@ -282,22 +274,22 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Get the collection identifier.
 	 *
-	 * @param  string  $group
-	 * @param  string  $namespace
+	 * @param  string $group
+	 * @param  string $namespace
 	 * @return string
 	 */
 	protected function getCollection($group, $namespace = null)
 	{
 		$namespace = $namespace ?: '*';
 
-		return $namespace.'::'.$group;
+		return $namespace . '::' . $group;
 	}
 
 	/**
 	 * Add a new namespace to the loader.
 	 *
-	 * @param  string  $namespace
-	 * @param  string  $hint
+	 * @param  string $namespace
+	 * @param  string $hint
 	 * @return void
 	 */
 	public function addNamespace($namespace, $hint)
@@ -329,7 +321,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Set the loader implementation.
 	 *
-	 * @param  \Illuminate\Config\LoaderInterface  $loader
+	 * @param  \Illuminate\Config\LoaderInterface $loader
 	 * @return void
 	 */
 	public function setLoader(LoaderInterface $loader)
@@ -370,7 +362,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Determine if the given configuration option exists.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return bool
 	 */
 	public function offsetExists($key)
@@ -381,7 +373,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Get a configuration option.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return mixed
 	 */
 	public function offsetGet($key)
@@ -392,8 +384,8 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Set a configuration option.
 	 *
-	 * @param  string  $key
-	 * @param  mixed  $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 */
 	public function offsetSet($key, $value)
@@ -404,7 +396,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	/**
 	 * Unset a configuration option.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return void
 	 */
 	public function offsetUnset($key)

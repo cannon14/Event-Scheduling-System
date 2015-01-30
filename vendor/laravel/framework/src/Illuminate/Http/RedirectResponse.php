@@ -6,7 +6,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Support\Contracts\MessageProviderInterface;
 
-class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectResponse {
+class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectResponse
+{
 
 	/**
 	 * The request instance.
@@ -25,9 +26,9 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Set a header on the Response.
 	 *
-	 * @param  string  $key
-	 * @param  string  $value
-	 * @param  bool  $replace
+	 * @param  string $key
+	 * @param  string $value
+	 * @param  bool $replace
 	 * @return $this
 	 */
 	public function header($key, $value, $replace = true)
@@ -40,16 +41,15 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Flash a piece of data to the session.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function with($key, $value = null)
 	{
 		$key = is_array($key) ? $key : [$key => $value];
 
-		foreach ($key as $k => $v)
-		{
+		foreach ($key as $k => $v) {
 			$this->session->flash($k, $v);
 		}
 
@@ -59,7 +59,7 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Add a cookie to the response.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Cookie  $cookie
+	 * @param  \Symfony\Component\HttpFoundation\Cookie $cookie
 	 * @return $this
 	 */
 	public function withCookie(Cookie $cookie)
@@ -72,7 +72,7 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Flash an array of input to the session.
 	 *
-	 * @param  array  $input
+	 * @param  array $input
 	 * @return $this
 	 */
 	public function withInput(array $input = null)
@@ -109,17 +109,15 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Flash a container of errors to the session.
 	 *
-	 * @param  \Illuminate\Support\Contracts\MessageProviderInterface|array  $provider
-	 * @param  string  $key
+	 * @param  \Illuminate\Support\Contracts\MessageProviderInterface|array $provider
+	 * @param  string $key
 	 * @return $this
 	 */
 	public function withErrors($provider, $key = 'default')
 	{
 		$value = $this->parseErrors($provider);
 
-		$this->session->flash(
-			'errors', $this->session->get('errors', new ViewErrorBag)->put($key, $value)
-		);
+		$this->session->flash('errors', $this->session->get('errors', new ViewErrorBag)->put($key, $value));
 
 		return $this;
 	}
@@ -127,17 +125,16 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Parse the given errors into an appropriate value.
 	 *
-	 * @param  \Illuminate\Support\Contracts\MessageProviderInterface|array  $provider
+	 * @param  \Illuminate\Support\Contracts\MessageProviderInterface|array $provider
 	 * @return \Illuminate\Support\MessageBag
 	 */
 	protected function parseErrors($provider)
 	{
-		if ($provider instanceof MessageProviderInterface)
-		{
+		if ($provider instanceof MessageProviderInterface) {
 			return $provider->getMessageBag();
 		}
 
-		return new MessageBag((array) $provider);
+		return new MessageBag((array)$provider);
 	}
 
 	/**
@@ -153,7 +150,7 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Set the request instance.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \Illuminate\Http\Request $request
 	 * @return void
 	 */
 	public function setRequest(Request $request)
@@ -174,7 +171,7 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Set the session store implementation.
 	 *
-	 * @param  \Illuminate\Session\Store  $session
+	 * @param  \Illuminate\Session\Store $session
 	 * @return void
 	 */
 	public function setSession(SessionStore $session)
@@ -185,16 +182,15 @@ class RedirectResponse extends \Symfony\Component\HttpFoundation\RedirectRespons
 	/**
 	 * Dynamically bind flash data in the session.
 	 *
-	 * @param  string  $method
-	 * @param  array  $parameters
+	 * @param  string $method
+	 * @param  array $parameters
 	 * @return void
 	 *
 	 * @throws \BadMethodCallException
 	 */
 	public function __call($method, $parameters)
 	{
-		if (starts_with($method, 'with'))
-		{
+		if (starts_with($method, 'with')) {
 			return $this->with(snake_case(substr($method, 4)), $parameters[0]);
 		}
 

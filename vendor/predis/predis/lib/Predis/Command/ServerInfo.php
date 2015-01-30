@@ -17,95 +17,95 @@ namespace Predis\Command;
  */
 class ServerInfo extends AbstractCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'INFO';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return 'INFO';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parseResponse($data)
-    {
-        $info      = array();
-        $infoLines = preg_split('/\r?\n/', $data);
+	/**
+	 * {@inheritdoc}
+	 */
+	public function parseResponse($data)
+	{
+		$info = array();
+		$infoLines = preg_split('/\r?\n/', $data);
 
-        foreach ($infoLines as $row) {
-            if (strpos($row, ':') === false) {
-                continue;
-            }
+		foreach ($infoLines as $row) {
+			if (strpos($row, ':') === false) {
+				continue;
+			}
 
-            list($k, $v) = $this->parseRow($row);
-            $info[$k] = $v;
-        }
+			list($k, $v) = $this->parseRow($row);
+			$info[$k] = $v;
+		}
 
-        return $info;
-    }
+		return $info;
+	}
 
-    /**
-     * Parses single row of the reply buffer and returns the key-value pair.
-     *
-     * @param  string $row Single row of the reply buffer.
-     * @return array
-     */
-    public function parseRow($row)
-    {
-        list($k, $v) = explode(':', $row, 2);
+	/**
+	 * Parses single row of the reply buffer and returns the key-value pair.
+	 *
+	 * @param  string $row Single row of the reply buffer.
+	 * @return array
+	 */
+	public function parseRow($row)
+	{
+		list($k, $v) = explode(':', $row, 2);
 
-        if (!preg_match('/^db\d+$/', $k)) {
-            if ($k === 'allocation_stats') {
-                $v = $this->parseAllocationStats($v);
-            }
-        } else {
-            $v = $this->parseDatabaseStats($v);
-        }
+		if (!preg_match('/^db\d+$/', $k)) {
+			if ($k === 'allocation_stats') {
+				$v = $this->parseAllocationStats($v);
+			}
+		} else {
+			$v = $this->parseDatabaseStats($v);
+		}
 
-        return array($k, $v);
-    }
+		return array($k, $v);
+	}
 
-    /**
-     * Parses the reply buffer and extracts the statistics of each logical DB.
-     *
-     * @param  string $str Reply buffer.
-     * @return array
-     */
-    protected function parseDatabaseStats($str)
-    {
-        $db = array();
+	/**
+	 * Parses the reply buffer and extracts the statistics of each logical DB.
+	 *
+	 * @param  string $str Reply buffer.
+	 * @return array
+	 */
+	protected function parseDatabaseStats($str)
+	{
+		$db = array();
 
-        foreach (explode(',', $str) as $dbvar) {
-            list($dbvk, $dbvv) = explode('=', $dbvar);
-            $db[trim($dbvk)] = $dbvv;
-        }
+		foreach (explode(',', $str) as $dbvar) {
+			list($dbvk, $dbvv) = explode('=', $dbvar);
+			$db[trim($dbvk)] = $dbvv;
+		}
 
-        return $db;
-    }
+		return $db;
+	}
 
-    /**
-     * Parses the reply buffer and extracts the allocation statistics.
-     *
-     * @param  string $str Reply buffer.
-     * @return array
-     */
-    protected function parseAllocationStats($str)
-    {
-        $stats = array();
+	/**
+	 * Parses the reply buffer and extracts the allocation statistics.
+	 *
+	 * @param  string $str Reply buffer.
+	 * @return array
+	 */
+	protected function parseAllocationStats($str)
+	{
+		$stats = array();
 
-        foreach (explode(',', $str) as $kv) {
-            @list($size, $objects, $extra) = explode('=', $kv);
+		foreach (explode(',', $str) as $kv) {
+			@list($size, $objects, $extra) = explode('=', $kv);
 
-            // hack to prevent incorrect values when parsing the >=256 key
-            if (isset($extra)) {
-                $size = ">=$objects";
-                $objects = $extra;
-            }
+			// hack to prevent incorrect values when parsing the >=256 key
+			if (isset($extra)) {
+				$size = ">=$objects";
+				$objects = $extra;
+			}
 
-            $stats[$size] = $objects;
-        }
+			$stats[$size] = $objects;
+		}
 
-        return $stats;
-    }
+		return $stats;
+	}
 }

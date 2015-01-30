@@ -7,26 +7,30 @@
  */
 use CCCOM\Event;
 
-class SiteController extends BaseController {
+class SiteController extends BaseController
+{
 
 
-	public function showIndex() {
+	public function showIndex()
+	{
 		$locations = Location::all();
 		$events = Event::all();
 
 		$allEvents = [];
-		foreach($events as $e) {
-			$allEvents[] = (object) array('title'=>$e->event_name, 'start'=>$e->start_dtg, 'end'=>$e->end_dtg);
+		foreach ($events as $e) {
+			$allEvents[] = (object)array('title' => $e->event_name, 'start' => $e->start_dtg, 'end' => $e->end_dtg);
 		}
 
-		return View::make('index.index')->with(array('locations'=>$locations, 'events'=>json_encode($allEvents)));
+		return View::make('index.index')->with(array('locations' => $locations, 'events' => json_encode($allEvents)));
 	}
 
-	public function showLogin() {
+	public function showLogin()
+	{
 		return View::make('index.login');
 	}
 
-	public function doLogin() {
+	public function doLogin()
+	{
 		// validate the info, create rules for the inputs
 		$rules = array('email' => 'required|email', // make sure the username is present
 			'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
@@ -39,8 +43,7 @@ class SiteController extends BaseController {
 		if ($validator->fails()) {
 			return Redirect::to('login')->withErrors($validator)// send back all errors to the login form
 			->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
-		}
-		else {
+		} else {
 			// create our user data for the authentication
 			$userdata = array('email' => Input::get('email'), 'password' => Input::get('password'));
 
@@ -48,15 +51,15 @@ class SiteController extends BaseController {
 			if (Auth::attempt($userdata)) {
 
 				return Redirect::to('/');
-			}
-			else {
+			} else {
 				// validation not successful, send back to form
 				return Redirect::to('login')->with('error', 'Email and/or Password is incorrect!');
 			}
 		}
 	}
 
-	public function doLogout() {
+	public function doLogout()
+	{
 		Auth::logout(); // log the user out of our application
 		return Redirect::to('login')->with('success', 'Your are now logged out!');
 	}

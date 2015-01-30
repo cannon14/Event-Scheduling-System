@@ -33,27 +33,27 @@ $dispatcher = new Predis\PubSub\DispatcherLoop($client);
 // Demonstrate how to use a callable class as a callback for Predis\DispatcherLoop.
 class EventsListener implements Countable
 {
-    private $events;
+	private $events;
 
-    public function __construct()
-    {
-        $this->events = array();
-    }
+	public function __construct()
+	{
+		$this->events = array();
+	}
 
-    public function count()
-    {
-        return count($this->events);
-    }
+	public function count()
+	{
+		return count($this->events);
+	}
 
-    public function getEvents()
-    {
-        return $this->events;
-    }
+	public function getEvents()
+	{
+		return $this->events;
+	}
 
-    public function __invoke($payload)
-    {
-        $this->events[] = $payload;
-    }
+	public function __invoke($payload)
+	{
+		$this->events[] = $payload;
+	}
 }
 
 // Attach our callable class to the dispatcher.
@@ -61,9 +61,9 @@ $dispatcher->attachCallback('events', ($events = new EventsListener()));
 
 // Attach a function to control the dispatcher loop termination with a message.
 $dispatcher->attachCallback('control', function ($payload) use ($dispatcher) {
-    if ($payload === 'terminate_dispatcher') {
-        $dispatcher->stop();
-    }
+	if ($payload === 'terminate_dispatcher') {
+		$dispatcher->stop();
+	}
 });
 
 // Run the dispatcher loop until the callback attached to the 'control' channel

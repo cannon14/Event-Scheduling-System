@@ -4,7 +4,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Console\MakeControllerCommand;
 use Illuminate\Routing\Generators\ControllerGenerator;
 
-class ControllerServiceProvider extends ServiceProvider {
+class ControllerServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -32,12 +33,11 @@ class ControllerServiceProvider extends ServiceProvider {
 	 */
 	protected function registerGenerator()
 	{
-		$this->app->bindShared('command.controller.make', function($app)
-		{
+		$this->app->bindShared('command.controller.make', function ($app) {
 			// The controller generator is responsible for building resourceful controllers
 			// quickly and easily for the developers via the Artisan CLI. We'll go ahead
 			// and register this command instances in this container for registration.
-			$path = $app['path'].'/controllers';
+			$path = $app['path'] . '/controllers';
 
 			$generator = new ControllerGenerator($app['files']);
 
@@ -52,9 +52,7 @@ class ControllerServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array(
-			'command.controller.make'
-		);
+		return array('command.controller.make');
 	}
 
 }

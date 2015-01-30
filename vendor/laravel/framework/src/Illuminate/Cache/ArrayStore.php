@@ -1,6 +1,7 @@
 <?php namespace Illuminate\Cache;
 
-class ArrayStore extends TaggableStore implements StoreInterface {
+class ArrayStore extends TaggableStore implements StoreInterface
+{
 
 	/**
 	 * The array of stored values.
@@ -12,13 +13,12 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Retrieve an item from the cache by key.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return mixed
 	 */
 	public function get($key)
 	{
-		if (array_key_exists($key, $this->storage))
-		{
+		if (array_key_exists($key, $this->storage)) {
 			return $this->storage[$key];
 		}
 	}
@@ -26,9 +26,9 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Store an item in the cache for a given number of minutes.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
-	 * @param  int     $minutes
+	 * @param  string $key
+	 * @param  mixed $value
+	 * @param  int $minutes
 	 * @return void
 	 */
 	public function put($key, $value, $minutes)
@@ -39,8 +39,8 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Increment the value of an item in the cache.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return int
 	 */
 	public function increment($key, $value = 1)
@@ -53,8 +53,8 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Increment the value of an item in the cache.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return int
 	 */
 	public function decrement($key, $value = 1)
@@ -65,8 +65,8 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Store an item in the cache indefinitely.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
+	 * @param  string $key
+	 * @param  mixed $value
 	 * @return void
 	 */
 	public function forever($key, $value)
@@ -77,7 +77,7 @@ class ArrayStore extends TaggableStore implements StoreInterface {
 	/**
 	 * Remove an item from the cache.
 	 *
-	 * @param  string  $key
+	 * @param  string $key
 	 * @return void
 	 */
 	public function forget($key)

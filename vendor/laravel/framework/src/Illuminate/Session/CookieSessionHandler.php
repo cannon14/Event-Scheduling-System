@@ -3,7 +3,8 @@
 use Illuminate\Cookie\CookieJar;
 use Symfony\Component\HttpFoundation\Request;
 
-class CookieSessionHandler implements \SessionHandlerInterface {
+class CookieSessionHandler implements \SessionHandlerInterface
+{
 
 	/**
 	 * The cookie jar instance.
@@ -22,8 +23,8 @@ class CookieSessionHandler implements \SessionHandlerInterface {
 	/**
 	 * Create a new cookie driven handler instance.
 	 *
-	 * @param  \Illuminate\Cookie\CookieJar  $cookie
-	 * @param  int  $minutes
+	 * @param  \Illuminate\Cookie\CookieJar $cookie
+	 * @param  int $minutes
 	 * @return void
 	 */
 	public function __construct(CookieJar $cookie, $minutes)
@@ -83,7 +84,7 @@ class CookieSessionHandler implements \SessionHandlerInterface {
 	/**
 	 * Set the request instance.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\Request  $request
+	 * @param  \Symfony\Component\HttpFoundation\Request $request
 	 * @return void
 	 */
 	public function setRequest(Request $request)

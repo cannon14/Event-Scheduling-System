@@ -1,6 +1,7 @@
 <?php
 
-class RemindersController extends \Controller {
+class RemindersController extends \Controller
+{
 
 	/**
 	 * Display the password reminder view.
@@ -19,32 +20,31 @@ class RemindersController extends \Controller {
 	 */
 	public function postRemind()
 	{
-        $response = null;
-        try {
-            $response = Password::remind(Input::only('email'));
-        }
-        catch (Exception $e) {
-            return Redirect::back()->with('error', "Enter a valid email address!");
-        }
-        switch ($response)
-        {
-            case Password::INVALID_USER:
-                return Redirect::back()->with('error', Lang::get($response));
+		$response = null;
+		try {
+			$response = Password::remind(Input::only('email'));
+		} catch (Exception $e) {
+			return Redirect::back()->with('error', "Enter a valid email address!");
+		}
+		switch ($response) {
+			case Password::INVALID_USER:
+				return Redirect::back()->with('error', Lang::get($response));
 
-            case Password::REMINDER_SENT:
-                return Redirect::to('login')->with('message', Lang::get($response));
-        }
+			case Password::REMINDER_SENT:
+				return Redirect::to('login')->with('message', Lang::get($response));
+		}
 	}
 
 	/**
 	 * Display the password reset view for the given token.
 	 *
-	 * @param  string  $token
+	 * @param  string $token
 	 * @return Response
 	 */
 	public function getReset($token = null)
 	{
-		if (is_null($token)) App::abort(404);
+		if (is_null($token))
+			App::abort(404);
 
 		return View::make('password.reset')->with('token', $token);
 	}
@@ -56,19 +56,15 @@ class RemindersController extends \Controller {
 	 */
 	public function postReset()
 	{
-		$credentials = Input::only(
-			'email', 'password', 'password_confirmation', 'token'
-		);
+		$credentials = Input::only('email', 'password', 'password_confirmation', 'token');
 
-		$response = Password::reset($credentials, function($user, $password)
-		{
+		$response = Password::reset($credentials, function ($user, $password) {
 			$user->password = Hash::make($password);
 
 			$user->save();
 		});
 
-		switch ($response)
-		{
+		switch ($response) {
 			case Password::INVALID_PASSWORD:
 			case Password::INVALID_TOKEN:
 			case Password::INVALID_USER:

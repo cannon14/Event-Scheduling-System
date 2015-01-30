@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDepartmentTable extends Migration {
+class CreateDepartmentTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -14,7 +15,7 @@ class CreateDepartmentTable extends Migration {
 	{
 		Schema::dropIfExists('departments');
 
-		Schema::create('departments', function($table) {
+		Schema::create('departments', function ($table) {
 			$table->increments('department_id');
 			$table->string('department_name')->unique;
 			$table->timestamps();

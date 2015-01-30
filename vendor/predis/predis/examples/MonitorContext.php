@@ -23,20 +23,20 @@ $client = new Predis\Client($single_server + array('read_write_timeout' => 0));
 $timestamp = new DateTime();
 
 foreach (($monitor = $client->monitor()) as $event) {
-    $timestamp->setTimestamp((int) $event->timestamp);
+	$timestamp->setTimestamp((int)$event->timestamp);
 
-    // If we notice a ECHO command with the message QUIT_MONITOR, we close the
-    // monitor context and then break the loop.
-    if ($event->command === 'ECHO' && $event->arguments === '"QUIT_MONITOR"') {
-        echo "Exiting the monitor loop...\n";
-        $monitor->closeContext();
-        break;
-    }
+	// If we notice a ECHO command with the message QUIT_MONITOR, we close the
+	// monitor context and then break the loop.
+	if ($event->command === 'ECHO' && $event->arguments === '"QUIT_MONITOR"') {
+		echo "Exiting the monitor loop...\n";
+		$monitor->closeContext();
+		break;
+	}
 
-    echo "* Received {$event->command} on DB {$event->database} at {$timestamp->format(DateTime::W3C)}\n";
-    if (isset($event->arguments)) {
-        echo "    Arguments: {$event->arguments}\n";
-    }
+	echo "* Received {$event->command} on DB {$event->database} at {$timestamp->format(DateTime::W3C)}\n";
+	if (isset($event->arguments)) {
+		echo "    Arguments: {$event->arguments}\n";
+	}
 }
 
 // Say goodbye :-)

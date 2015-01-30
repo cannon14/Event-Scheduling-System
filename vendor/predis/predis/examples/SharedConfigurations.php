@@ -9,25 +9,8 @@
  * file that was distributed with this source code.
  */
 
-require __DIR__.'/../autoload.php';
+require __DIR__ . '/../autoload.php';
 
-$single_server = array(
-    'host'     => '127.0.0.1',
-    'port'     => 6379,
-    'database' => 15
-);
+$single_server = array('host' => '127.0.0.1', 'port' => 6379, 'database' => 15);
 
-$multiple_servers = array(
-    array(
-       'host'     => '127.0.0.1',
-       'port'     => 6379,
-       'database' => 15,
-       'alias'    => 'first',
-    ),
-    array(
-       'host'     => '127.0.0.1',
-       'port'     => 6380,
-       'database' => 15,
-       'alias'    => 'second',
-    ),
-);
+$multiple_servers = array(array('host' => '127.0.0.1', 'port' => 6379, 'database' => 15, 'alias' => 'first',), array('host' => '127.0.0.1', 'port' => 6380, 'database' => 15, 'alias' => 'second',),);

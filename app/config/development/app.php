@@ -15,7 +15,6 @@ return array(
 
 	'debug' => true,
 
-	'providers' => append_config(array(
-	))
+	'providers' => append_config(array())
 
 );
