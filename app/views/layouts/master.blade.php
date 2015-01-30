@@ -14,10 +14,12 @@
     {{ HTML::script('packages/moment/moment.js'); }}
     {{ HTML::script('packages/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'); }}
     {{ HTML::script('packages/DataTables-1.10.4/media/js/jquery.dataTables.min.js') }}
+    {{ HTML::script('packages/fullcalendar-2.2.6/fullcalendar.js') }}
 
     {{ HTML::style('packages/bootstrap/dist/css/bootstrap.min.css'); }}
     {{ HTML::style('packages/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'); }}
     {{ HTML::style('packages/DataTables-1.10.4/media/css/jquery.dataTables.min.css') }}
+    {{ HTML::style('packages/fullcalendar-2.2.6/fullcalendar.css') }}
     {{ HTML::style('css/site_styles.css'); }}
 
 </head>
@@ -75,14 +77,13 @@
         </div>
     @endif
 
-    <div class="container">
     @yield('content')
-    </div><!--container-->
 
+    <footer>
     <footer>
         <div class="row">
             <div class="col-lg-12 text-center">
-                <p>Copyright&copy {{ HTML::link('http://www.creditcards.com', 'Creditcards.com') }} 2014</p>
+                <p>Copyright&copy {{ HTML::link('http://www.creditcards.com', 'Creditcards.com') }} 2015</p>
             </div>
         </div>
     </footer>
@@ -97,5 +98,10 @@
 
     $(document).ready(function() {
         $('.datatable').DataTable();
-    })
+
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-D HH:mm:ss',
+            language: 'en'
+        });
+    });
 </script>

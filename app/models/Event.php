@@ -27,4 +27,8 @@ class Event extends \Eloquent {
         return $this->belongsTo('Location');
     }
 
+    public function department() {
+        return $this->belongsTo('Department');
+    }
+
 }

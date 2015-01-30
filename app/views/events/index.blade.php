@@ -31,10 +31,10 @@
                     @foreach($events as $event)
                         <tr>
                             <td>{{$event->event_id}}</td>
-                            <td>{{$event->name}}</td>
-                            <td>{{$event->description}}</td>
-                            <td>{{$event->scheduler}}</td>
-                            <td>{{$event->department}}</td>
+                            <td>{{$event->event_name}}</td>
+                            <td>{{$event->event_description}}</td>
+                            <td>{{$event->user->firstname.' '.$event->user->lastname}}</td>
+                            <td>{{$event->department->department_name}}</td>
                             <td>{{$event->start_dtg}}</td>
                             <td>{{$event->end_dtg}}</td>
                             <td>

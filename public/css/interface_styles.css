@@ -1,42 +1,35 @@
 body {
     background-color: #87ae4b;
 }
-#current_event_time {
-    font-size: 36px;
+.dtg {
+    font-size: 18px;
 }
-#current_name {
-    font-size: 24px;
+.meeting_name {
+    font-size: 18px;
 }
-#current_department {
-    font-size: 24px;
+.scheduler {
+    font-size: 18px;
 }
-
-#next_date_time {
-    font-size:36px;
-}
-#next_name {
-    font-size: 24px;
-}
-#next_department {
-    font-size: 24px;
+.department {
+    font-size: 18px;
 }
 
 #location_name {
-    font-size: 72px;
+    font-size: 60px;
     font-weight: bold;
     padding-top:50px;
     padding-bottom:50px;
 }
 #status_row {
     color:#ffffff;
-    font-size: 96px;
+    font-size: 72px;
     font-weight: bold;
-    padding-top:50px;
-    padding-bottom:50px;
+    padding-top:30px;
+    padding-bottom:30px;
     border:thick inset black;
 }
 #current_event_timer {
-    font-size: 72px;
+    font-size: 60px;
 }
 #control_row div {
     padding-top:25px;

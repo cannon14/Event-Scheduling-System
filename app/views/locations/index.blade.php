@@ -28,8 +28,8 @@
                     @foreach($locations as $location)
                         <tr>
                             <td>{{$location->location_id}}</td>
-                            <td>{{$location->name}}</td>
-                            <td>{{$location->capacity}}</td>
+                            <td>{{$location->location_name}}</td>
+                            <td>{{$location->location_capacity}}</td>
                             <td>
                                 {{ Form::open(array('url' => url('locations/'.$location->location_id), 'method' => 'GET', 'class'=>'action_buttons')) }}
                                 <button type="submit"><span class="glyphicon glyphicon-search"></span></button>

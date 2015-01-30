@@ -4,30 +4,35 @@
 
 {{ HTML::style('css/interface_styles.css'); }}
 
-<div class="row text-center">
-    <div class="col-lg-4">
-        <h2>Current Meeting</h2>
+<div class="row text-center info_row">
+    <div class="col-sm-4">
+        <h2>Current</h2>
         @if($currentEvent != null)
-            <div id="current_name">{{$currentEvent->user->firstname . " " . $currentEvent->user->lastname}}</div>
-            <div id="current_department">{{$currentEvent->department}}</div>
+            <div class="meeting_name">{{$currentEvent->event_name}}</div>
+            <div class="scheduler">{{$currentEvent->user->firstname . " " . $currentEvent->user->lastname}}</div>
+            <div class="department">{{$currentEvent->department->department_name}}</div>
         @else
             <div>None Scheduled!</div>
         @endif
     </div>
-    <div class="col-lg-4">
+    <div class="col-sm-4">
         <div id="location_name">{{$location->location_name}}</div>
     </div>
-    <div class="col-lg-4">
-        <h2>Next Meeting</h2>
+    <div class="col-sm-4">
+        <h2>Next</h2>
         @if($nextEvent != null)
-            <div id="next_date_time">{{$nextEvent->start_dtg}}</div>
-            <div id="next_name">{{$nextEvent->user->firstname . " " . $nextEvent->user->lastname}}</div>
-            <div id="next_department">{{$nextEvent->user->department}}</div>
+            <div class="meeting_name">{{ $nextEvent->event_name }}</div>
+            <div class="dtg">Start: {{$nextEvent->start_dtg}}</div>
+            <div class="dtg">End: {{$nextEvent->end_dtg}}</div>
+            <div class="scheduler">{{$nextEvent->user->firstname . " " . $nextEvent->user->lastname}}</div>
+            <div class="department">{{$nextEvent->department->department_name}}</div>
         @else
             <div>None Scheduled!</div>
         @endif
     </div>
 </div>
+
+<br>
 
 <div class="row" id="status_row">
     <div class="col-lg-12 text-center">
@@ -37,18 +42,15 @@
 </div>
 
 <div class="row" id="control_row">
-    <div class="col-lg-12 text-center">
+    <div class="col-sm-2 text-left"><button type="button" class="btn btn-primary btn-lg" id="plusFifteen">+
+            15min</button></div>
+    <div class="col-sm-8 text-center">
         <button type="button" class="btn btn-primary btn-lg" id="start">Start</button>
         <button type="button" class="btn btn-primary btn-lg" id="stop" disabled>Stop</button>
         <button type="button" class="btn btn-primary btn-lg" id="reset" disabled>Reset</button>
     </div>
-</div>
-
-<div class="row" id="control_row">
-    <div class="col-lg-12 text-center">
-        <button type="button" class="btn btn-primary btn-lg" id="plusFifteen">+ 15min</button>
-        <button type="button" class="btn btn-primary btn-lg" id="minusFifteen">- 15min</button>
-    </div>
+    <div class="col-sm-2 text-right"><button type="button" class="btn btn-primary btn-lg" id="minusFifteen">-
+            15min</button></div>
 </div>
 
 <div class="modal fade" id="addSchedulerModal">
@@ -74,14 +76,14 @@ $(document).ready(function() {
     //Check database every 5 minutes
 
     setInterval(function(){checkForEvents()}, 100000);
+
     function checkForEvents() {
         $.ajax({
             type: "POST",
             url: "checkDatabase.php",
-            data: { id: '{{$location->id}}' }
+            data: { id: '1' }
         })
         .done(function( msg ) {
-            alert( "Data Saved: " + msg );
         });
     }
 
@@ -110,7 +112,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "checkDatabase.php",
-            data: { id: "2"}
+            data: { id: "1" }
         })
         .done(function( msg ) {
             alert( "Data Saved: " + msg );
@@ -205,7 +207,6 @@ $(document).ready(function() {
             displayTime();
         }
     }
-
 });
 </script>
 

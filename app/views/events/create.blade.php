@@ -25,11 +25,17 @@
             </div>
             <div class="form-group">
                 {{ Form::label('start_dtg', 'Start', array('class'=>'control-label')) }}
-                {{ Form::text('start_dtg', Input::old('starg_dtg'), array('class'=>'form-control', 'data-datepicker' => 'datepicker')) }}
+                <div class="datetimepicker input-append">
+                {{ Form::text('start_dtg', Input::old('start_dtg'), array('class'=>'form-control')) }}
+                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                </div>
             </div>
             <div class="form-group">
                 {{ Form::label('end_dtg', 'End', array('class'=>'control-label')) }}
-                {{ Form::text('end_dtg', Input::old('end_dtg'), array('class'=>'form-control', 'data-datepicker' => 'datepicker')) }}
+                <div class="datetimepicker input-append date">
+                {{ Form::text('end_dtg', Input::old('end_dtg'), array('class'=>'form-control')) }}
+                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                </div>
             </div>
             <div class="form-group">
                 {{ Form::submit('Create', array('class'=>'btn btn-primary')) }}
@@ -37,6 +43,5 @@
             {{ Form::close() }}
         </div>
     </div>
-
 
 @stop

@@ -5,13 +5,21 @@
  * @author David Cannon
  * @date 20 Oct 14
  */
+use CCCOM\Event;
+
 class SiteController extends BaseController {
 
 
 	public function showIndex() {
 		$locations = Location::all();
+		$events = Event::all();
 
-		return View::make('index.index')->with(array('locations'=>$locations));
+		$allEvents = [];
+		foreach($events as $e) {
+			$allEvents[] = (object) array('title'=>$e->event_name, 'start'=>$e->start_dtg, 'end'=>$e->end_dtg);
+		}
+
+		return View::make('index.index')->with(array('locations'=>$locations, 'events'=>json_encode($allEvents)));
 	}
 
 	public function showLogin() {

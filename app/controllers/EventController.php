@@ -28,7 +28,7 @@ class EventController extends BaseController {
      * @return Response
      */
     public function create() {
-        $locations = array('' => 'Select A Location') + Location::lists('name', 'location_id');
+        $locations = array('' => 'Select A Location') + Location::lists('location_name', 'location_id');
         return View::make('events.create')->with(array('locations' => $locations));
     }
 
@@ -55,8 +55,9 @@ class EventController extends BaseController {
         $event = new Event();
         $event->event_name = Input::get('event_name', '');
         $event->user_id = Auth::user()->user_id;
+        $event->department_id = Auth::user()->department->department_id;
         $event->location_id = Input::get('location_id', '');
-        $event->description = Input::get('description', '');
+        $event->event_description = Input::get('description', '');
         $event->start_dtg = Input::get('start_dtg', '');
         $event->end_dtg = Input::get('end_dtg', '');
 
@@ -89,7 +90,10 @@ class EventController extends BaseController {
      * @return Response
      */
     public function edit($id) {
-        return View::make('events.edit');
+        $event = Event::find($id);
+        $locations = array('' => 'Select A Location') + Location::lists('location_name', 'location_id');
+
+        return View::make('events.edit')->with(array('event'=>$event, 'locations'=>$locations));
     }
 
 
@@ -99,7 +103,8 @@ class EventController extends BaseController {
      * @param  int $id
      * @return Response
      */
-    public function update($id) {
+    public function update($id)
+    {
 
         //Validation Rules
         $rules = array('event_name' => 'required', 'location_id' => 'required', 'start_dtg' => 'required', 'end_dtg' => 'required');
@@ -114,10 +119,10 @@ class EventController extends BaseController {
         }
 
         //If Validation passed, create an event and assign the variables.
-        $event = new Event();
+        $event = Event::find($id);
         $event->event_name = Input::get('event_name');
         $event->location_id = Input::get('location_id');
-        $event->description = Input::get('description');
+        $event->event_description = Input::get('description');
         $event->start_dtg = Input::get('start_dtg');
         $event->end_dtg = Input::get('end_dtg');
 
@@ -127,31 +132,6 @@ class EventController extends BaseController {
         } else {
             return Redirect::to('events')->with('error', 'Error Updating Event! Try Again Later!');
         }
-
-        /*
-        $event = Event::find($id);
-
-        //If an input variable value has changed...change the corresponding event variable
-        if($event->event_name != Input::get('event_name')) {
-            $event->event_name = Input::get('event_name');
-        }
-        if($event->description != Input::get('description')) {
-            $event->description = Input::get('description');
-        }
-        if($event->start_dtg != Input::get('start_dtg')) {
-            $event->start_dtg = Input::get('start_dtg', '');
-        }
-        if($event->end_dtg != Input::get('end_dtg')) {
-            $event->end_dtg = Input::get('end_dtg', '');
-        }
-
-        //Try and save event and report status to view.
-        if ($event->save()) {
-            return Redirect::to('events')->with('success', 'Event Successfully Updated!');
-        } else {
-            return Redirect::to('events')->with('error', 'Error Updating Event! Try Again Later!');
-        }
-        */
     }
 
 
